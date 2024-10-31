@@ -1,0 +1,65 @@
+<div>
+    <p class="title">Catalogo de Produtos</p>
+</div>
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8 prod-table">
+    <!-- ProductId Column -->
+    <ng-container matColumnDef="productId">
+      <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.productId}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+  
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> Descricao </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+    </ng-container>
+  
+    <!-- Value Column -->
+    <ng-container matColumnDef="value">
+      <mat-header-cell *matHeaderCellDef> Valor </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
+    </ng-container>
+  
+    <!-- TypeValue Column -->
+    <ng-container matColumnDef="typeValue">
+      <mat-header-cell *matHeaderCellDef> Tipo valor </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.typeValue}} </mat-cell>
+    </ng-container>
+
+    <!-- StockQuantity Column -->
+    <ng-container matColumnDef="stockQuantity">
+        <mat-header-cell *matHeaderCellDef> Quantidade </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.stockQuantity}} </mat-cell>
+      </ng-container>
+
+      <!-- ImageUrl Column -->
+    <ng-container matColumnDef="imageUrl">
+        <mat-header-cell *matHeaderCellDef> Imagem </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.imageUrl}} </mat-cell>
+      </ng-container>
+
+      <!-- CategoryId Column -->
+    <ng-container matColumnDef="categoryId">
+        <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.categoryId}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element"> 
+          <button mat-flat-button *ngIf="isAdmin" color="basic" [routerLink]="['/product-edit', element.productId]" selected>Editar</button>
+          <button mat-flat-button *ngIf="isAdmin" color="warn" [routerLink]="['/product-delete', element.productId]" selected>Deletar</button>
+        </td>
+      </ng-container>
+  
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row 
+    *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    
+</mat-table>

@@ -1,0 +1,35 @@
+::ng-deep .mat-mdc-table {
+    height: 87dvh;
+    width: 98% !important;
+    overflow: auto;
+}
+  
+.mat-column-name {
+    height: 80px;
+}
+
+.prod-table{
+    width: 80%;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+    max-width: 80% !important;
+}
+  
+.mat-mdc-row:hover .mat-mdc-cell {
+    /*border-color: currentColor;*/
+    font-weight: bold;
+}
+  
+.demo-row-is-clicked {
+    font-weight: bold;
+}
+
+.title{
+    padding: 0px 25px;
+    font-weight: 500;
+    font-size: large;
+}

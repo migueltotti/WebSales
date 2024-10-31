@@ -1,0 +1,37 @@
+<div class="container">  
+    <form [formGroup]="productForm!" (ngSubmit)="updateProduct(productForm?.value)" class="forms-edit">
+        <mat-form-field>
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="nome">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Descrição</mat-label>
+            <textarea matInput formControlName="descricao"></textarea>
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+            <mat-label class="valor-input">Valor</mat-label>
+            <input matInput type="number" formControlName="valor" class="example-left-align" placeholder="0.00" min="0.01" step="0.01" (blur)="formatValue()"/>
+            <span matTextSuffix>$&nbsp;</span>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Tipo Valor</mat-label>
+            <mat-select formControlName="tipoValor">
+                <mat-option *ngFor="let typeValue of tipoValores" [value]="typeValue.id"> {{typeValue.nome}} </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Quantidade</mat-label>
+            <input matInput formControlName="quantidade" type="number" placeholder="0" />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="categoria">
+            <mat-option *ngFor="let category of categories" [value]="category.categoryId"> {{category.name}} </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button type="submit" [disabled]="!productForm?.valid">Save Changes</button>
+        <br>
+        <button mat-flat-button routerLink="/products">Cancel</button>
+    </form>
+</div>  
