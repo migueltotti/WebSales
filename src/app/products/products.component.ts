@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, PLATFORM_ID, Inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Product } from '../../models/product';
@@ -13,7 +13,7 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { AuthService } from '../../services/auth.service';
-import { NgIf } from '@angular/common';
+import { NgIf, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-products',
@@ -47,6 +47,7 @@ export class ProductsComponent implements OnInit{
   isAdmin: boolean = false;
 
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
     private api: ApiService,
     private auth: AuthService,
     private dialog: MatDialog
@@ -69,7 +70,9 @@ export class ProductsComponent implements OnInit{
       }
     });
 
-    this.isAdmin = this.auth.isAdmin();
+    if(isPlatformBrowser(this.platformId)) {
+      this.isAdmin = this.auth.isAdmin();
+    }
   }
 
   checkRow(row: any){

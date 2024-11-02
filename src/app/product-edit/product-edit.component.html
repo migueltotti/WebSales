@@ -1,37 +1,41 @@
 <div class="container">  
-    <form [formGroup]="productForm!" (ngSubmit)="updateProduct(productForm?.value)" class="forms-edit">
+    <form [formGroup]="productForm!" (ngSubmit)="updateProduct()" class="forms-edit">
         <mat-form-field>
             <mat-label>Nome</mat-label>
-            <input matInput formControlName="nome">
+            <input type="text" matInput formControlName="name">
         </mat-form-field>
         <mat-form-field>
             <mat-label>Descrição</mat-label>
-            <textarea matInput formControlName="descricao"></textarea>
+            <textarea type="text" matInput formControlName="description"></textarea>
         </mat-form-field>
         <mat-form-field floatLabel="always">
             <mat-label class="valor-input">Valor</mat-label>
-            <input matInput type="number" formControlName="valor" class="example-left-align" placeholder="0.00" min="0.01" step="0.01" (blur)="formatValue()"/>
+            <input matInput type="number" formControlName="value" class="example-left-align" placeholder="0.00" min="0.01" step="0.01" (blur)="formatValue()"/>
             <span matTextSuffix>$&nbsp;</span>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Tipo Valor</mat-label>
-            <mat-select formControlName="tipoValor">
+            <mat-select formControlName="typeValue">
                 <mat-option *ngFor="let typeValue of tipoValores" [value]="typeValue.id"> {{typeValue.nome}} </mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Quantidade</mat-label>
-            <input matInput formControlName="quantidade" type="number" placeholder="0" />
+            <input matInput formControlName="stockQuantity" type="number" placeholder="0" />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>ImagemUrl</mat-label>
+            <input matInput formControlName="imageUrl" type="text" />
         </mat-form-field>
         <mat-form-field>
             <mat-label>Category</mat-label>
-            <mat-select formControlName="categoria">
+            <mat-select formControlName="categoryId">
             <mat-option *ngFor="let category of categories" [value]="category.categoryId"> {{category.name}} </mat-option>
             </mat-select>
         </mat-form-field>
 
         <button mat-raised-button type="submit" [disabled]="!productForm?.valid">Save Changes</button>
         <br>
-        <button mat-flat-button routerLink="/products">Cancel</button>
+        <button mat-flat-button (click)="cancel()">Cancel</button>
     </form>
 </div>  

@@ -11,7 +11,11 @@ export class AuthService {
   constructor() {}
 
   getToken(): string | null {
-    return localStorage.getItem('jwt');
+    if(typeof localStorage !== "undefined"){
+      return localStorage.getItem('jwt');
+    }
+    
+    return null;
   }
 
   isAuthenticated(): boolean {

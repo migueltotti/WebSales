@@ -32,19 +32,15 @@ import { RouterLink } from '@angular/router';
 })
 export class ProductEditComponent implements OnInit {
 
-  productId: string = '';
-  nome: string = '';
-  descricao: string = '';
-  valor: string = '';
-  tipoValor: string = '';
-  quantidade: string = '';
-  categoria: string = '';
+  productId: number = 0;
   productForm: FormGroup | undefined;
 
   categories: Category[] = [];
   tipoValores = [{nome: "Unidade", id: 2}, {nome: "Kilo", id: 1}];
 
   isLoadingResults = false;
+
+  teste = false;
 
   constructor(
     private api: ApiService,
@@ -57,28 +53,31 @@ export class ProductEditComponent implements OnInit {
   ngOnInit(){
     this.getCategories();
     this.getProduct(this.route.snapshot.params['id']);
-    this.productForm = this.formBuilder.group({
-      'productId' : [null],  
-      'nome' : [null, Validators.required],
-      'descricao' : [null, Validators.required],
-      'valor' : [null, Validators.required],
-      'tipoValor' : [null, Validators.required],
-      'quantidade' : [null, Validators.required],
-      'categoria' : [null, Validators.required],
+    this.productForm = this.formBuilder.group({  
+      'productId': [null],
+      'name' : [null, Validators.required],
+      'description' : [null, Validators.required],
+      'value' : [null, Validators.required],
+      'typeValue' : [null, Validators.required],
+      'stockQuantity' : [null, Validators.required],
+      'imageUrl' : [null, Validators.required],
+      'categoryId' : [null, Validators.required],
     });
   }
 
   getProduct(id: number){
     this.api.getProduct(id).subscribe(res =>{
+      //console.log(res);
       this.productId = res.productId;
       this.productForm?.setValue({
         productId: res.productId,
-        nome: res.name,
-        descricao: res.description,
-        valor: res.value,
-        tipoValor: res.typeValue,
-        quantidade: res.stockQuantity,
-        categoria: res.categoryId,
+        name: res.name,
+        description: res.description,
+        value: res.value,
+        typeValue: res.typeValue,
+        stockQuantity: res.stockQuantity,
+        imageUrl: res.imageUrl,
+        categoryId: res.categoryId,
       });
     });
   }
@@ -89,13 +88,20 @@ export class ProductEditComponent implements OnInit {
     });
   }
 
-  // TODO: Resolver o problema do productId nao estar sendo reconhecido
-
-  updateProduct(form: NgForm) {
+  updateProduct() {
     this.isLoadingResults = true;
-    this.api.updateProduct(this.productId, form.value)
+    console.log("botao acionado");
+
+    const product = this.api.toProduct(this.productForm!);
+    //const product = this.productForm?.value;
+    console.log('Depois do toProduct: ');
+    console.log(product);
+    
+    
+    this.api.updateProduct(this.productId, product)
     .subscribe({
       next: (res) => {
+        console.log(res);
         this.isLoadingResults = false;
         this.router.navigate(['/products']);
       },
@@ -106,11 +112,18 @@ export class ProductEditComponent implements OnInit {
       complete: () => {
         console.log('request completed: updateProduct');
       }
-    })
+    });
+  }
+
+  cancel(){
+    this.router.navigate(['/products']).then(() => {
+      window.location.reload();
+      window.location.reload();
+    });
   }
 
   formatValue(){
-    const valorControl = this.productForm!.get('valor');
+    const valorControl = this.productForm!.get('Value');
     let valor = valorControl?.value;
 
     if (valor) {

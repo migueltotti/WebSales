@@ -4,6 +4,8 @@ import { catchError, Observable, of, tap } from 'rxjs';
 import { Product } from '../models/product';
 import { User } from '../models/user';
 import { Category } from '../models/category';
+import { FormGroup } from '@angular/forms';
+import { request } from 'http';
 
 const apiUrl = 'https://localhost:44373/api/Products';
 const apiLoginUrl = 'https://localhost:44373/api/Auth/Login';
@@ -64,8 +66,13 @@ export class ApiService {
     );
   }
 
-  updateProduct(id: string, product: Product): Observable<any> {
+  updateProduct(id: number, product: Product): Observable<any> {
     const url = apiUrl + '/' + id;
+
+    this.montarHeaderToken();
+    console.log(url);
+    console.log(httpOptions);
+
     return this.http.put(
       url, product, httpOptions
     ).pipe(
@@ -76,12 +83,33 @@ export class ApiService {
 
   deleteProduct(id: number, product: Product): Observable<any> {
     const url = apiUrl + '/' + id;
+    
+    this.montarHeaderToken();
+
     return this.http.delete<Product>(
       url, httpOptions
     ).pipe(
       tap(_ => console.log('product edited successfully with id=' + product.productId)),
       catchError(this.handleError<Product>('deleteProduct'))
     );
+  }
+
+  toProduct(form: FormGroup<any>) : Product{
+    console.log('Dentro do toProduct');
+    console.log(form.value);
+
+    const product = new Product(
+      parseInt(form.get('productId')?.value, 10),
+      form.get('name')?.value,
+      form.get('description')?.value,
+      parseFloat(form.get('value')?.value),
+      parseInt(form.get('typeValue')?.value, 10),
+      parseInt(form.get('stockQuantity')?.value, 10),
+      form.get('imageUrl')?.value,
+      parseInt(form.get('categoryId')?.value, 10)
+    );
+
+    return product;
   }
 
   private handleError<T> (operation = 'operation', result?: T){
