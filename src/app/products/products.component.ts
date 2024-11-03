@@ -28,16 +28,17 @@ import { NgIf, NgStyle, isPlatformBrowser } from '@angular/common';
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })
+
 export class ProductsComponent implements OnInit{
   displayedColumns: string[] = [
-    'productId',
+    //'productId',
     'name',
-    'description',
+    //'description',
     'value',
     'typeValue',
     'stockQuantity',
-    'imageUrl',
-    'categoryId',
+    //'imageUrl',
+    //'categoryId',
     'action'
   ];
   dataSource: Product[] = [];
@@ -116,4 +117,33 @@ export class DialogAnimationsExampleDialog {
 }
 
 // (click)="checkRow(row)"
-// [class.demo-row-is-clicked]="isRowSelected(row)"*/
+// [class.demo-row-is-clicked]="isRowSelected(row)"
+
+
+<!-- ProductId Column -->
+    <ng-container matColumnDef="productId">
+      <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.productId}} </mat-cell>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> Descricao </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+    </ng-container>
+
+
+      <!-- ImageUrl Column -->
+    <ng-container matColumnDef="imageUrl">
+        <mat-header-cell *matHeaderCellDef> Imagem </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.imageUrl}} </mat-cell>
+      </ng-container>
+
+      
+      <!-- CategoryId Column -->
+    <ng-container matColumnDef="categoryId">
+        <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.categoryId}} </mat-cell>
+      </ng-container>
+
+*/

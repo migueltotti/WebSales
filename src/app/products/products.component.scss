@@ -3,6 +3,7 @@
     width: 98% !important;
     overflow: auto;
 }
+
   
 .mat-column-name {
     height: 80px;
@@ -37,5 +38,10 @@
 .create-button{
     margin: 5px 0px;
     background-color: #3285FA;
+    color: white;
+}
+
+.edit-button{
+    background-color: orange;
     color: white;
 }
