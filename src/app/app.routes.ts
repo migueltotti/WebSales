@@ -8,6 +8,7 @@ import { UserComponent } from './user/user.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductEditComponent } from './product-edit/product-edit.component';
 import { ProductDeleteComponent } from './product-delete/product-delete.component';
+import { ProductCreateComponent } from './product-create/product-create.component';
 
 export const routes: Routes = [
     {
@@ -29,6 +30,11 @@ export const routes: Routes = [
         path: 'product/:id',
         title: 'Product detail',
         component: ProductDetailsComponent
+    },
+    {
+        path: 'product-create',
+        title: 'Products create',
+        component: ProductCreateComponent
     },
     {
         path: 'product-edit/:id',

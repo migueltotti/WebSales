@@ -61,7 +61,7 @@ export class ApiService {
     return this.http.post<Product>(
       apiUrl, product, httpOptions
     ).pipe(
-      tap((Product: Product) => console.log('product added successfully with id=' + product.productId)),
+      tap((Product: any) => console.log('product added successfully')),
       catchError(this.handleError<Product>('addProduct'))
     );
   }
@@ -81,7 +81,7 @@ export class ApiService {
     );
   }
 
-  deleteProduct(id: number, product: Product): Observable<any> {
+  deleteProduct(id: number): Observable<any> {
     const url = apiUrl + '/' + id;
     
     this.montarHeaderToken();
@@ -89,7 +89,7 @@ export class ApiService {
     return this.http.delete<Product>(
       url, httpOptions
     ).pipe(
-      tap(_ => console.log('product edited successfully with id=' + product.productId)),
+      tap(_ => console.log('product deleted successfully with id=' + id)),
       catchError(this.handleError<Product>('deleteProduct'))
     );
   }

@@ -1,0 +1,42 @@
+<h1 class="create-title">Novo Produto</h1>
+
+<div class="container">  
+    <form [formGroup]="productForm!" (ngSubmit)="createProduct()" class="forms-edit">
+        <mat-form-field>
+            <mat-label>Nome</mat-label>
+            <input type="text" matInput formControlName="name">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Descrição</mat-label>
+            <textarea type="text" matInput formControlName="description"></textarea>
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+            <mat-label class="valor-input">Valor</mat-label>
+            <input matInput type="number" formControlName="value" class="example-left-align" placeholder="0.00" min="0.01" step="0.01" (blur)="formatValue()"/>
+            <span matTextSuffix>$&nbsp;</span>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Tipo Valor</mat-label>
+            <mat-select formControlName="typeValue">
+                <mat-option *ngFor="let typeValue of tipoValores" [value]="typeValue.id"> {{typeValue.nome}} </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Quantidade</mat-label>
+            <input matInput formControlName="stockQuantity" type="number" placeholder="0" />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>ImagemUrl</mat-label>
+            <input matInput formControlName="imageUrl" type="text" />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="categoryId">
+            <mat-option *ngFor="let category of categories" [value]="category.categoryId"> {{category.name}} </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button class="create-button" type="submit" [disabled]="!productForm?.valid">Adicionar Produto</button>
+        <button mat-flat-button class="cancel-button" routerLink='/products' >Cancelar</button>
+    </form>
+</div>  

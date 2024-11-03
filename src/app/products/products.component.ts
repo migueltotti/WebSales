@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, PLATFORM_ID, Inject } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Product } from '../../models/product';
 import { MatTableModule } from '@angular/material/table';
@@ -13,7 +13,7 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { AuthService } from '../../services/auth.service';
-import { NgIf, isPlatformBrowser } from '@angular/common';
+import { NgIf, NgStyle, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-products',
@@ -22,7 +22,8 @@ import { NgIf, isPlatformBrowser } from '@angular/common';
     MatTableModule,
     MatButtonModule,
     RouterLink,
-    NgIf
+    NgIf,
+    NgStyle
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
@@ -50,7 +51,7 @@ export class ProductsComponent implements OnInit{
     @Inject(PLATFORM_ID) private platformId: Object,
     private api: ApiService,
     private auth: AuthService,
-    private dialog: MatDialog
+    //private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -77,22 +78,23 @@ export class ProductsComponent implements OnInit{
 
   checkRow(row: any){
     this.rowSelected = row;
-    this.openDialog('0ms', '0ms');
+    //this.openDialog('0ms', '0ms');
   }
 
   isRowSelected(row: any): boolean{
     return this.rowSelected == row;
   }
 
-  openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+  /*openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
     this.dialog.open(DialogAnimationsExampleDialog, {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
     });
-  }
+  }*/
 }
 
+/*
 @Component({
   selector: 'dialog-animations-example-dialog',
   templateUrl: 'dialog-animations-example-dialog.html',
@@ -114,4 +116,4 @@ export class DialogAnimationsExampleDialog {
 }
 
 // (click)="checkRow(row)"
-// [class.demo-row-is-clicked]="isRowSelected(row)"
+// [class.demo-row-is-clicked]="isRowSelected(row)"*/

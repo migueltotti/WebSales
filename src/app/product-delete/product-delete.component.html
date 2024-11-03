@@ -1,1 +1,9 @@
-<p>product-delete works!</p>
+<h1 class="delete-title">Deseja excluir este produto?</h1>
+
+<mat-card class="product-card" appearance="outlined">
+    <mat-card-content>Id: {{product?.productId}} - Name: {{product?.name}}</mat-card-content>
+  </mat-card>
+
+<button mat-flat-button class="delete-button action-buttons" (click)="confirmDelete()">Delete</button>
+<button mat-button color="primary" class="action-buttons" routerLink="/products">Cancel</button>
+

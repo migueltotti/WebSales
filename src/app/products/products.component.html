@@ -1,7 +1,11 @@
 <div>
     <p class="title">Catalogo de Produtos</p>
 </div>
-<mat-table [dataSource]="dataSource" class="mat-elevation-z8 prod-table">
+<button mat-flat-button *ngIf="isAdmin" class="create-button" routerLink='/product-create' selected>Novo Produto</button>
+<mat-table 
+  [dataSource]="dataSource"  
+  class="mat-elevation-z8 prod-table"
+  [ngStyle]="{'height': isAdmin ? '81dvh' : '87dvh'}">
     <!-- ProductId Column -->
     <ng-container matColumnDef="productId">
       <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
