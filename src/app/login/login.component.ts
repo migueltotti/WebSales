@@ -53,7 +53,7 @@ export class LoginComponent {
     .subscribe({ 
       next: (res) => {
       this.dataSource = res;
-      localStorage.setItem("jwt", this.dataSource.token);
+      sessionStorage.setItem("jwt", this.dataSource.token);
       this.isLoadingResults = false;
       this.router.navigate(['/home']);
     }, error: (err) => {

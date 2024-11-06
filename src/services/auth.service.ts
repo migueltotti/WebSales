@@ -11,8 +11,8 @@ export class AuthService {
   constructor() {}
 
   getToken(): string | null {
-    if(typeof localStorage !== "undefined"){
-      return localStorage.getItem('jwt');
+    if(typeof sessionStorage !== "undefined"){
+      return sessionStorage.getItem('jwt');
     }
     
     return null;

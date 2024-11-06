@@ -1,11 +1,12 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { Product } from '../models/product';
 import { User } from '../models/user';
 import { Category } from '../models/category';
 import { FormGroup } from '@angular/forms';
 import { request } from 'http';
+import { QueryStringParameters } from '../models/queryStringParameters';
 
 const apiUrl = 'https://localhost:44373/api/Products';
 const apiLoginUrl = 'https://localhost:44373/api/Auth/Login';
@@ -23,7 +24,7 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   montarHeaderToken() {
-    token = localStorage.getItem("jwt");
+    token = sessionStorage.getItem("jwt");
     console.log('jwt header token ' + token)
     httpOptions = {headers: new HttpHeaders({"Authorization" : "Bearer " + token, "Content-Type": "application/json"})}
   }
@@ -35,14 +36,25 @@ export class ApiService {
     );
   }
 
-  getProducts(): Observable<Product[]> {
-    console.log(httpOptions.headers);
-    return this.http.get<Product[]>(
-      apiUrl,
-      httpOptions
+  getProducts(
+    httpOp: {headers: HttpHeaders} = httpOptions,
+     parameters: QueryStringParameters | null = null) : Observable<HttpResponse<Product[]>> 
+  {
+    var apiPagUrl = apiUrl; 
+
+    if(parameters != null){
+      apiPagUrl += `?PageNumber=${parameters!.pageNumber}&PageSize=${parameters!.pageSize}`;
+    }
+
+    return this.http.get<HttpResponse<Product[]>>(
+      apiPagUrl,
+      httpOp
     ).pipe(
       tap(Products => console.log('products received successfully')),
-      catchError(this.handleError('getProducts', []))
+      catchError(err => {
+        console.log(err);
+        return throwError(err);
+      })
     );
   }
 

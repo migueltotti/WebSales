@@ -4,16 +4,13 @@ import { ApiService } from '../../services/api.service';
 import { Product } from '../../models/product';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { AuthService } from '../../services/auth.service';
 import { NgIf, NgStyle, isPlatformBrowser } from '@angular/common';
+import { HttpHeaders } from '@angular/common/http';
+import { PaginationInfo } from '../../models/paginationInfo';
+import { PaginationService } from '../../services/pagination.service';
+import { QueryStringParameters } from '../../models/queryStringParameters';
 
 @Component({
   selector: 'app-products',
@@ -21,6 +18,7 @@ import { NgIf, NgStyle, isPlatformBrowser } from '@angular/common';
   imports: [
     MatTableModule,
     MatButtonModule,
+    MatPaginator,
     RouterLink,
     NgIf,
     NgStyle
@@ -48,19 +46,44 @@ export class ProductsComponent implements OnInit{
 
   isAdmin: boolean = false;
 
+  // Pagination
+  paginationInfo: PaginationInfo | undefined;
+
+  length: number | undefined;
+  pageSize: number | undefined;
+  pageIndex: number | undefined;
+  pageSizeOptions = [5, 10, 25, 50];
+
+  pageEvent: PageEvent | undefined;
+
+  httpOptions = {
+    headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+    }),
+    observe: 'response' 
+  };
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private api: ApiService,
     private auth: AuthService,
-    //private dialog: MatDialog
+    private pag: PaginationService
   ) { }
 
   ngOnInit() {
-    this.api.getProducts()
+    this.api.getProducts(this.httpOptions)
     .subscribe({
       next: (res) => {
-        this.dataSource = res;
+        this.dataSource = res.body || [];
         console.log(this.dataSource);
+
+        this.paginationInfo = this.pag.getPaginationInfo(res);
+        this.length = this.paginationInfo.TotalItemCount;
+        this.pageSize = this.paginationInfo.PageSize;
+        this.pageIndex = this.paginationInfo.PageNumber! - 1;
+
+        console.log(this.paginationInfo);
+        
         this.isLoadingResults = false;
       },
       error: (err) => {
@@ -86,13 +109,33 @@ export class ProductsComponent implements OnInit{
     return this.rowSelected == row;
   }
 
-  /*openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(DialogAnimationsExampleDialog, {
-      width: '250px',
-      enterAnimationDuration,
-      exitAnimationDuration,
-    });
-  }*/
+  handlePageEvent(e: PageEvent) {
+    this.pageEvent = e;
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+
+    this.api.getProducts(this.httpOptions, new QueryStringParameters(this.pageSize, this.pageIndex + 1))
+    .subscribe({
+      next: (res) => {
+        this.dataSource = res.body || [];
+
+        this.paginationInfo = this.pag.getPaginationInfo(res);
+        this.length = this.paginationInfo.TotalItemCount;
+        this.pageSize = this.paginationInfo.PageSize;
+        this.pageIndex = this.paginationInfo.PageNumber! - 1;
+
+        console.log(this.dataSource);
+        console.log(this.paginationInfo);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('Pagination changed: products loaded');
+      }
+    })
+  }
 }
 
 /*

@@ -115,13 +115,6 @@ export class ProductEditComponent implements OnInit {
     });
   }
 
-  cancel(){
-    this.router.navigate(['/products']).then(() => {
-      window.location.reload();
-      window.location.reload();
-    });
-  }
-
   formatValue(){
     const valorControl = this.productForm!.get('Value');
     let valor = valorControl?.value;

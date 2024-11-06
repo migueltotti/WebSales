@@ -18,7 +18,7 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
   montarHeaderToken() {
-    token = localStorage.getItem("jwt");
+    token = sessionStorage.getItem("jwt");
     console.log('jwt header token ' + token)
     httpOptions = {headers: new HttpHeaders({"Authorization" : "Bearer " + token, "Content-Type": "application/json"})}
   }
