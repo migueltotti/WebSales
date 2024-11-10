@@ -6,10 +6,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule, NgFor } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
-import { User } from '../../models/user';
+import { LoginModel } from '../../models/loginModel';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { error } from 'console';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -28,18 +29,18 @@ import { error } from 'console';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  //hide = signal(true);
   hide = true;
 
   email: string = '';
   password: string = '';
-  dataSource: User | undefined;
+  dataSource: LoginModel | undefined;
   isLoadingResults = false;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private api: ApiService
+    private api: ApiService,
+    private auth: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -53,7 +54,8 @@ export class LoginComponent {
     .subscribe({ 
       next: (res) => {
       this.dataSource = res;
-      sessionStorage.setItem("jwt", this.dataSource.token);
+      sessionStorage.setItem("jwt", this.dataSource!.token);
+      this.auth.setUserEmailToStorage();
       this.isLoadingResults = false;
       this.router.navigate(['/home']);
     }, error: (err) => {

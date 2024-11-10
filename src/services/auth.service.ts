@@ -38,4 +38,14 @@ export class AuthService {
     const decodedToken = this.jwtHelper.decodeToken(token);
     return decodedToken?.role === 'Admin';
   }
+
+  setUserEmailToStorage(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    sessionStorage.setItem('email', decodedToken?.email);
+    
+    return true;
+  }
 }

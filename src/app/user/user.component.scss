@@ -1,0 +1,53 @@
+.user-page {
+    max-width: 1200px;
+    margin: auto;
+    padding: 1em;
+    overflow: auto;
+    --user-page-display-justify-content: space-around;
+  }
+  .user-avatar {
+    /*background-image: url('caminho/para/avatar.jpg');
+    background-size: cover;*/
+  }
+  .order-table {
+    width: 100%;
+  }
+  .divider{
+    margin-top: 20px;
+  }
+  .user-info{
+    padding-right: 5px;
+  }
+
+::ng-deep .mat-grid-tile-content {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: var(--user-page-display-justify-content) !important;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 1280px){
+  .user-page {
+    max-width: 1200px;
+    margin: auto;
+    padding: 1em;
+    overflow: auto;
+    --user-page-display-justify-content: flex-start;
+  }
+}
+
+.orders-title{
+  font-weight: 500;
+  font-size: x-large;
+}
+
+.order-mat-content {
+  padding: 10px 16px !important;
+}

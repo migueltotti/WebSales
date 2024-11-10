@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { Product } from '../models/product';
-import { User } from '../models/user';
+import { LoginModel } from '../models/loginModel';
 import { Category } from '../models/category';
 import { FormGroup } from '@angular/forms';
 import { request } from 'http';
@@ -29,10 +29,10 @@ export class ApiService {
     httpOptions = {headers: new HttpHeaders({"Authorization" : "Bearer " + token, "Content-Type": "application/json"})}
   }
 
-  Login (user: any) {
-    return this.http.post<User>(apiLoginUrl, user).pipe(
-      tap((user: User) => console.log('Login usuario com email =' + user.email)),
-      catchError(this.handleError<User>('Login'))
+  Login (loginModel: any) {
+    return this.http.post<LoginModel>(apiLoginUrl, loginModel).pipe(
+      tap(() => console.log('Login usuario com email =' + loginModel.email)),
+      catchError(this.handleError<LoginModel>('Login'))
     );
   }
 
