@@ -14,7 +14,6 @@
     </mat-card-header>
   
     <!-- Informações Pessoais -->
-    <!-- Colocar cada informacao em um grid-title separado -->
     <mat-card-content>
       <mat-grid-list [cols]="gridCols" [rowHeight]="gridRowHeight" class="mat-grid-list">
         <mat-grid-tile>
@@ -39,18 +38,22 @@
   <mat-divider></mat-divider>
     <mat-card-content class="order-mat-content">
       <h3 class="orders-title">Últimos Pedidos</h3>
-      <table mat-table [dataSource]="userOrders" class="order-table">
-        <ng-container matColumnDef="orderNumber">
+      <table mat-table [dataSource]="orders!" class="order-table">
+        <ng-container matColumnDef="orderId">
           <th mat-header-cell *matHeaderCellDef>Número do Pedido</th>
-          <td mat-cell *matCellDef="let order">{{ order.orderNumber }}</td>
+          <td mat-cell *matCellDef="let order">{{ order.orderId }}</td>
         </ng-container>
-        <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef>Data</th>
-          <td mat-cell *matCellDef="let order">{{ order.date | date:'shortTime' }}</td>
-        </ng-container>
-        <ng-container matColumnDef="total">
+        <ng-container matColumnDef="totalValue">
           <th mat-header-cell *matHeaderCellDef>Total</th>
-          <td mat-cell *matCellDef="let order">{{ order.total | brlPipe }}</td>
+          <td mat-cell *matCellDef="let order">{{ order.totalValue | brlPipe }}</td>
+        </ng-container>
+        <ng-container matColumnDef="orderDate">
+          <th mat-header-cell *matHeaderCellDef>Data</th>
+          <td mat-cell *matCellDef="let order">{{ order.orderDate | date:'medium' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="orderStatus">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let order">{{ status.get(order.orderStatus) }}</td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
