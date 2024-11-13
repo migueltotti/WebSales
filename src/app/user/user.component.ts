@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { NgFor, NgOptimizedImage  } from '@angular/common';
 import { MatCard, MatCardHeader, MatCardContent, MatCardActions, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
-import { MatTable } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,6 +37,7 @@ const ordersTest = [
   new Order(3, 34, '10/10/2024', 3, 3),
   new Order(2, 89.90, '09/10/2024', 2, 3),
   new Order(23, 1231, '09/10/2024', 1, 4),
+  /*new Order(23, 1231, '09/10/2024', 1, 4),
   new Order(23, 1231, '09/10/2024', 1, 4),
   new Order(23, 1231, '09/10/2024', 1, 4),
   new Order(23, 1231, '09/10/2024', 1, 4),
@@ -44,8 +45,7 @@ const ordersTest = [
   new Order(23, 1231, '09/10/2024', 1, 4),
   new Order(23, 1231, '09/10/2024', 1, 4),
   new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
+  new Order(23, 1231, '09/10/2024', 1, 4),*/
 ]
 
 @Component({
@@ -65,7 +65,9 @@ const ordersTest = [
     MatGridListModule,
     MatDivider,
     DatePipe,
-    BrlPipe
+    BrlPipe,
+    NgFor,
+    NgOptimizedImage
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
@@ -97,7 +99,7 @@ export class UserComponent implements OnInit{
     [3, "Bhrama"],
   ]);
 
-  gridCols: number = 5; // Defau
+  gridCols: number = 5; // Default
   gridRowHeight: number = 85;
 
   // Pagination
@@ -117,11 +119,11 @@ export class UserComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.email = sessionStorage.getItem('email')!;
-    //this.email = userTest.email;
+    //this.email = sessionStorage.getItem('email')!;
+    this.email = userTest.email;
 
 
-    this.userServ.getUserByEmail(this.email)
+    /*this.userServ.getUserByEmail(this.email)
     .pipe(
       switchMap(user => {
         this.user = user;
@@ -136,10 +138,10 @@ export class UserComponent implements OnInit{
       error: (err) => {
         console.log(err);
       }
-    });
+    });*/
     
-    //this.user = userTest;
-    //this.orders = ordersTest;
+    this.user = userTest;
+    this.orders = ordersTest;
 
     this.breakpointObserver.observe([
       Breakpoints.XSmall,

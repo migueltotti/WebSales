@@ -36,7 +36,7 @@
   
     <!-- Últimos Pedidos -->
   <mat-divider></mat-divider>
-    <mat-card-content class="order-mat-content">
+    <!--<mat-card-content class="order-mat-content">
       <h3 class="orders-title">Últimos Pedidos</h3>
       <table mat-table [dataSource]="orders!" class="order-table">
         <ng-container matColumnDef="orderId">
@@ -58,8 +58,24 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-    </mat-card-content>
-  
+    </mat-card-content> -->
+
+    <mat-grid-list [cols]="orders?.length" rowHeight="410px" gutterSize="10px" class="order-card-list">
+      <mat-grid-tile *ngFor="let order of orders; let i = index" class="example-card">
+        <mat-card class="example-card" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Order number: {{ order.orderId }}</mat-card-title>
+          </mat-card-header>
+          <img mat-card-image ngSrc="/coca_cola.png" width="250" height="250" alt="Photo of a Coke" class="order-product-image">
+          <mat-card-content>
+            <p>Total Value: {{ order.totalValue | brlPipe}}</p>
+            <p>Date: {{ order.orderDate }}</p>
+            <p>Status: {{ status.get(order.orderStatus) }}</p>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+    
     <!-- Outras Ações e Configurações -->
     <mat-divider class="divider"></mat-divider>
     <mat-card-actions>
