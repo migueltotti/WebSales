@@ -72,6 +72,31 @@ export class OrderService {
     );
   }
 
+  getOrdersWithProductsByUserId(
+    id: number,
+    httpOp: {headers: HttpHeaders} = httpOptions,
+    parameters: QueryStringParameters | null = null) : Observable<Order[]> 
+  {
+    var url = apiUrl + `/Products/${id}`
+
+    if(parameters != null){
+      url += `?PageNumber=${parameters!.pageNumber}&PageSize=${parameters!.pageSize}`;
+    }
+
+    this.montarHeaderToken();
+
+    return this.http.get<Order[]>(
+      url,
+      httpOp
+    ).pipe(
+      tap(Order => console.log(`orders from user with id=${id} received successfully`)),
+      catchError(err => {
+        console.log(err);
+        return throwError(err);
+      })
+    );
+  }
+
   getOrder(id: number): Observable<Order> {
     const url = apiUrl + '/' + id;
 

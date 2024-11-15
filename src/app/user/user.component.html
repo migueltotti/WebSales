@@ -8,8 +8,8 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="editUser()">Editar</button>
-        <button mat-menu-item (click)="deleteUser()">Deletar</button>
+        <button mat-menu-item [routerLink]="['/user-edit', user?.userId]">Editar</button>
+        <button mat-menu-item [routerLink]="['/user-delete', user?.userId]">Deletar</button>
       </mat-menu>
     </mat-card-header>
   
@@ -32,7 +32,7 @@
           <p class="user-info"><strong>Afiliado a Empresa:</strong> <br> {{ affiliates.get(user?.affiliateId!) || 'N/A' }}</p>
         </mat-grid-tile>
       </mat-grid-list>
-    </mat-card-content>
+    
   
     <!-- Últimos Pedidos -->
   <mat-divider></mat-divider>
@@ -58,10 +58,10 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-    </mat-card-content> -->
+    </mat-card-content> 
 
     <mat-grid-list [cols]="orders?.length" rowHeight="410px" gutterSize="10px" class="order-card-list">
-      <mat-grid-tile *ngFor="let order of orders; let i = index" class="example-card">
+      <mat-grid-tile *ngFor="let order of orders; let i = index" mat-grid-tile>
         <mat-card class="example-card" appearance="outlined">
           <mat-card-header>
             <mat-card-title>Order number: {{ order.orderId }}</mat-card-title>
@@ -74,7 +74,28 @@
           </mat-card-content>
         </mat-card>
       </mat-grid-tile>
-    </mat-grid-list>
+    </mat-grid-list>-->
+
+    <div class="carousel">
+      <div class="carousel-container" [style.transform]="getTransform()">
+          <mat-card *ngFor="let order of orders" class="example-card" appearance="outlined">
+            <mat-card-header>
+              <mat-card-title>Order number: {{ order.orderId }}</mat-card-title>
+            </mat-card-header>
+            <img mat-card-image ngSrc="/coca_cola.png" width="245" height="245" alt="Photo of a Coke" class="order-product-image">
+            <mat-card-content>
+              <p>Total Value: {{ order.totalValue | brlPipe}}</p>
+              <p>Date: {{ order.orderDate }}</p>
+              <div class="order-div-status-prod">
+                <p>Status: {{ status.get(order.orderStatus) }}</p>
+                <button mat-fab extended class="order-products-button"> Produtos </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+      </div>
+    </div>
+    <button mat-button (click)="previous()" [disabled]="!(currentIndex != 0)">Anterior</button>
+    <button mat-button (click)="next()" [disabled]="((currentIndex + 1) >= (orders?.length! / 4))">Próximo</button>
     
     <!-- Outras Ações e Configurações -->
     <mat-divider class="divider"></mat-divider>
@@ -82,5 +103,6 @@
       <button mat-button (click)="goToAccountSettings()">Configurações da Conta</button>
       <button mat-button (click)="viewWishlist()">Minha Lista de Desejos</button>
     </mat-card-actions>
-  </mat-card>
+  </mat-card-content>
+</mat-card>
   

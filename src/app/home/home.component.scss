@@ -1,0 +1,12 @@
+.carousel {
+    overflow: hidden;
+    width: 100%;
+  }
+  .carousel-container {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+  mat-card {
+    min-width: 33%; /* Ajuste conforme o necessário */
+  }
+  

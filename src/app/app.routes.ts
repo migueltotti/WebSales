@@ -9,6 +9,8 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
 import { ProductEditComponent } from './product-edit/product-edit.component';
 import { ProductDeleteComponent } from './product-delete/product-delete.component';
 import { ProductCreateComponent } from './product-create/product-create.component';
+import { UserEditComponent } from './user-edit/user-edit.component';
+import { UserDeleteComponent } from './user-delete/user-delete.component';
 
 export const routes: Routes = [
     {
@@ -55,6 +57,16 @@ export const routes: Routes = [
         path: 'user',
         title: 'User info page',
         component: UserComponent
+    },
+    {
+        path: 'user-edit/:id',
+        title: 'User edit',
+        component: UserEditComponent
+    },
+    {
+        path: 'user-delete/:id',
+        title: 'User delete',
+        component: UserDeleteComponent
     },
     { 
         path: '',

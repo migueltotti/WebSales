@@ -11,6 +11,7 @@ import { UserService } from '../../services/user.service';
 import { DatePipe } from '@angular/common';
 import { BrlPipe } from '../../app/extensions/valuePipe'
 import { User } from '../../models/user';
+import { RouterLink } from '@angular/router';
 import { CdkTableDataSourceInput } from '@angular/cdk/table';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { OrderService } from '../../services/order.service';
@@ -37,7 +38,6 @@ const ordersTest = [
   new Order(3, 34, '10/10/2024', 3, 3),
   new Order(2, 89.90, '09/10/2024', 2, 3),
   new Order(23, 1231, '09/10/2024', 1, 4),
-  /*new Order(23, 1231, '09/10/2024', 1, 4),
   new Order(23, 1231, '09/10/2024', 1, 4),
   new Order(23, 1231, '09/10/2024', 1, 4),
   new Order(23, 1231, '09/10/2024', 1, 4),
@@ -45,7 +45,15 @@ const ordersTest = [
   new Order(23, 1231, '09/10/2024', 1, 4),
   new Order(23, 1231, '09/10/2024', 1, 4),
   new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),*/
+  new Order(23, 1231, '09/10/2024', 1, 4),
+  new Order(23, 1231, '09/10/2024', 1, 4),
+  new Order(23, 1231, '09/10/2024', 1, 4),
+  new Order(23, 1231, '09/10/2024', 1, 4),
+  new Order(23, 1231, '09/10/2024', 1, 4),
+  new Order(23, 1231, '09/10/2024', 1, 4),
+  new Order(23, 1231, '09/10/2024', 1, 4),
+  new Order(23, 1231, '09/10/2024', 1, 4),
+  new Order(23, 1231, '09/10/2024', 1, 4),/**/
 ]
 
 @Component({
@@ -67,7 +75,8 @@ const ordersTest = [
     DatePipe,
     BrlPipe,
     NgFor,
-    NgOptimizedImage
+    NgOptimizedImage,
+    RouterLink
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
@@ -111,6 +120,8 @@ export class UserComponent implements OnInit{
   pageSizeOptions = [5, 10, 25, 50];
 
   pageEvent: PageEvent | undefined;
+
+  currentIndex = 0;
 
   constructor(
     private userServ: UserService,
@@ -166,19 +177,30 @@ export class UserComponent implements OnInit{
 
   }
 
-  editUser() {
-    // Lógica para editar usuário
-  }
-
-  deleteUser() {
-    // Lógica para deletar usuário
-  }
-
   goToAccountSettings() {
     // Navegar para a página de configurações
   }
 
   viewWishlist() {
     // Navegar para a lista de desejos do usuário
+  }
+
+
+  getTransform() {
+    return `translateX(-${this.currentIndex * 100}%)`;
+  }
+
+  previous() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+      console.log(this.currentIndex);
+    }
+  }
+
+  next() {
+    if (this.currentIndex < this.orders?.length! - 1) {
+      this.currentIndex++;
+      console.log(this.currentIndex);
+    }
   }
 }

@@ -57,6 +57,16 @@ export class UserService {
     );
   }
 
+  getUserById(id: number): Observable<User> {
+    const url = apiUrl + id;
+    return this.http.get<User>(
+      url, httpOptions
+    ).pipe(
+      tap((Product: User) => console.log('user received successfully')),
+      catchError(this.handleError<User>('getUser'))
+    );
+  }
+
   addUser(user: User): Observable<User> {
     this.montarHeaderToken();
     return this.http.post<User>(

@@ -2,9 +2,17 @@
     max-width: 1200px;
     margin: auto;
     padding: 1em;
-    overflow: auto;
+    height: 100%;
     --user-page-display-justify-content: space-around;
   }
+
+mat-card.user-page{
+  max-height: 87vh; // Define a altura máxima do card, ajuste conforme necessário
+  overflow-y: auto; // Permite rolar o conteúdo dentro do card
+  padding: 1em; // Espaçamento interno para melhor visualização
+  box-sizing: border-box; // Garante que o padding não aumente a altura total
+}
+
   .user-avatar {
     /*background-image: url('caminho/para/avatar.jpg');
     background-size: cover;*/
@@ -53,10 +61,12 @@
 }
 
 .example-card {
-  width: 275px;
+  width: 270px;
   height: 400px;
   display: flex;
-  margin-top: 5px;
+  margin-top: 10px;
+  
+  margin-right: 10px;
 }
 
 .order-product-image{
@@ -65,4 +75,33 @@
 
 .order-card-list{
   width: 100%;
+}
+
+.order-div-status-prod {
+  display: flex;
+  align-items: baseline;
+  position: absolute;
+  bottom: 5px;
+}
+
+.order-products-button {
+  position: absolute;
+  top: -3px;
+  left: 152px;
+  height: 34px;
+  padding: 15px;
+  background-color: #A3D0E8;
+}
+
+
+.carousel {
+  overflow: hidden;
+  width: 100%;
+}
+.carousel-container {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+mat-card {
+  min-width: 270px; /* Ajuste conforme o necessário */
 }
