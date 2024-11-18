@@ -4,7 +4,9 @@ import { ApiService } from '../../services/api.service';
 import { Product } from '../../models/product';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '../../services/auth.service';
 import { NgIf, NgStyle, isPlatformBrowser } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
@@ -12,12 +14,20 @@ import { PaginationInfo } from '../../models/paginationInfo';
 import { PaginationService } from '../../services/pagination.service';
 import { QueryStringParameters } from '../../models/queryStringParameters';
 
+const productsTest = [
+  new Product(1, 'prodTeste1', 'prodTeste1', 10, 1, 10, 'prodTeste.jpg', 1),
+  new Product(2, 'prodTeste2', 'prodTeste2', 20, 1, 10, 'prodTeste.jpg', 1),
+  new Product(3, 'prodTeste3', 'prodTeste3', 30, 1, 10, 'prodTeste.jpg', 1),
+  new Product(4, 'prodTeste4', 'prodTeste4', 40, 1, 10, 'prodTeste.jpg', 1),
+]
 @Component({
   selector: 'app-products',
   standalone: true,
   imports: [
     MatTableModule,
     MatButtonModule,
+    MatMenuModule,
+    MatIcon,
     MatPaginator,
     RouterLink,
     NgIf,
@@ -71,7 +81,13 @@ export class ProductsComponent implements OnInit{
   ) { }
 
   ngOnInit() {
-    this.api.getProducts(this.httpOptions)
+    this.dataSource = productsTest;
+    this.length = 4;
+    this.pageSize = 10;
+    this.pageIndex = 1 - 1;
+    this.isAdmin = false;
+
+    /*this.api.getProducts(this.httpOptions)
     .subscribe({
       next: (res) => {
         this.dataSource = res.body || [];
@@ -97,7 +113,7 @@ export class ProductsComponent implements OnInit{
 
     if(isPlatformBrowser(this.platformId)) {
       this.isAdmin = this.auth.isAdmin();
-    }
+    }*/
   }
 
   checkRow(row: any){

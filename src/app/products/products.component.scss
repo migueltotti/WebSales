@@ -1,6 +1,6 @@
 ::ng-deep .mat-mdc-table {
     height: 87dvh;
-    width: 98% !important;
+    min-width: 98% !important;
     overflow: auto;
 }
 
@@ -44,4 +44,9 @@
 .edit-button{
     background-color: orange;
     color: white;
+}
+
+.add_shopping_cart{
+    background-color: #5EDBAF;
+    padding-right: 9px;
 }
