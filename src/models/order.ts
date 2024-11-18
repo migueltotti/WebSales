@@ -13,12 +13,14 @@ export class Order{
         totalValue: number,
         orderDate: string,
         orderStatus: number,
-        userId: number
+        userId: number,
+        products: Product[]
     ) {
         this.orderId = orderId;
         this.totalValue = totalValue;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
         this.userId = userId;
+        this.products = products;
     }
 }

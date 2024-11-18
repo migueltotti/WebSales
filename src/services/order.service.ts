@@ -89,7 +89,7 @@ export class OrderService {
       url,
       httpOp
     ).pipe(
-      tap(Order => console.log(`orders from user with id=${id} received successfully`)),
+      tap(Order => console.log(`orders with product from user with id=${id} received successfully`)),
       catchError(err => {
         console.log(err);
         return throwError(err);
@@ -156,6 +156,7 @@ export class OrderService {
       form.get('orderDate')?.value,
       parseInt(form.get('orderStatus')?.value, 10),
       parseInt(form.get('userId')?.value, 10),
+      form.get('products')?.value
     );
 
     return order;

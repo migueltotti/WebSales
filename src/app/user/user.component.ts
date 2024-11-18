@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgFor, NgOptimizedImage  } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, Inject, OnInit } from '@angular/core';
+import { NgFor, NgOptimizedImage, NgIf  } from '@angular/common';
 import { MatCard, MatCardHeader, MatCardContent, MatCardActions, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,8 +20,10 @@ import { HttpHeaders } from '@angular/common/http';
 import { PaginationInfo } from '../../models/paginationInfo';
 import { PageEvent } from '@angular/material/paginator';
 import { switchMap } from 'rxjs';
+import { MatDialog, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Product } from '../../models/product';
 
-const userTest = new User(
+/*const userTest = new User(
   1,
   'Miguel Totti de Oliveira',
   'migueltotti2005@gmail.com',
@@ -33,28 +35,39 @@ const userTest = new User(
   2,
 );
 
-const ordersTest = [
-  new Order(1, 100, '11/10/2024', 3, 8),
-  new Order(3, 34, '10/10/2024', 3, 3),
-  new Order(2, 89.90, '09/10/2024', 2, 3),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),
-  new Order(23, 1231, '09/10/2024', 1, 4),/**/
+const productsTest = [
+  new Product(1, 'prodTeste1', 'prodTeste1', 10, 1, 10, 'prodTeste.jpg', 1),
+  new Product(2, 'prodTeste2', 'prodTeste2', 20, 1, 10, 'prodTeste.jpg', 1),
+  new Product(3, 'prodTeste3', 'prodTeste3', 30, 1, 10, 'prodTeste.jpg', 1),
+  new Product(4, 'prodTeste4', 'prodTeste4', 40, 1, 10, 'prodTeste.jpg', 1),
 ]
+
+const ordersTest = [
+  new Order(1, 100, '11/10/2024', 3, 8, productsTest),
+  new Order(3, 34, '10/10/2024', 3, 3, productsTest),
+  new Order(2, 89.90, '09/10/2024', 2, 3, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+  new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
+]*/
+
+export interface DialogData {
+  order: Order;
+}
 
 @Component({
   selector: 'app-user',
@@ -76,7 +89,8 @@ const ordersTest = [
     BrlPipe,
     NgFor,
     NgOptimizedImage,
-    RouterLink
+    RouterLink,
+    MatDialogModule
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
@@ -126,33 +140,34 @@ export class UserComponent implements OnInit{
   constructor(
     private userServ: UserService,
     private orderServ: OrderService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private readonly dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    //this.email = sessionStorage.getItem('email')!;
-    this.email = userTest.email;
+    this.email = sessionStorage.getItem('email')!;
+    //this.email = userTest.email;
 
 
-    /*this.userServ.getUserByEmail(this.email)
+    this.userServ.getUserByEmail(this.email)
     .pipe(
       switchMap(user => {
         this.user = user;
-        console.log(this.user);
-        return this.orderServ.getOrdersByUserId(user.userId);
+        console.log(user);
+        return this.orderServ.getOrdersWithProductsByUserId(user.userId);
       })
     ).subscribe({
       next: (orders) => {
         this.orders = orders;
-        console.log(this.orders);
+        console.log(orders);
       },
       error: (err) => {
         console.log(err);
       }
-    });*/
+    });
     
-    this.user = userTest;
-    this.orders = ordersTest;
+    //this.user = userTest;
+    //this.orders = ordersTest;
 
     this.breakpointObserver.observe([
       Breakpoints.XSmall,
@@ -177,6 +192,15 @@ export class UserComponent implements OnInit{
 
   }
 
+  openDialog(orderId: number) {
+    this.dialog.open(OrderProductsDialog, {
+        data:{
+          order: this.orders?.find(o => o.orderId == orderId)!
+        }
+      }
+    );
+  }
+
   goToAccountSettings() {
     // Navegar para a página de configurações
   }
@@ -193,14 +217,53 @@ export class UserComponent implements OnInit{
   previous() {
     if (this.currentIndex > 0) {
       this.currentIndex--;
-      console.log(this.currentIndex);
+      //console.log(this.currentIndex);
     }
   }
 
   next() {
     if (this.currentIndex < this.orders?.length! - 1) {
       this.currentIndex++;
-      console.log(this.currentIndex);
+      //console.log(this.currentIndex);
     }
+  }
+}
+
+// Dialog to show products from order
+
+@Component({
+  selector: 'dialog-order-products',
+  templateUrl: './dialog.orderproducts.html',
+  styleUrl: './dialog.orderproducts.scss',
+  standalone: true,
+  imports: [
+    MatCard,
+    MatCardHeader,
+    MatCardContent,
+    MatCardActions,
+    MatCardSubtitle,
+    MatCardTitle,
+    MatTableModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatGridListModule,
+    MatDivider,
+    DatePipe,
+    BrlPipe,
+    NgFor,
+    NgIf,
+    NgOptimizedImage,
+    RouterLink,
+    MatDialogModule
+]
+})
+export class OrderProductsDialog {
+  products: Product[] | undefined;
+  
+  constructor( @Inject(MAT_DIALOG_DATA) public data: { order: Order} ){
+
+    this.products = data.order.products;
+    console.log(this.products);
   }
 }

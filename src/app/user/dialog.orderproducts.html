@@ -1,0 +1,21 @@
+<button mat-icon-button mat-dialog-close class="dialog-close-button">
+    <mat-icon>close</mat-icon>
+</button>
+<h2 mat-dialog-title class="prod-title">Total de produtos: {{data.order.products.length}}</h2>
+@if (data.order.products.length > 0) {
+  <mat-dialog-content class="mat-typography">
+    <div class="products">
+        <mat-card *ngFor="let prod of data.order.products" class="example-card" appearance="outlined">
+            <img mat-card-image ngSrc="/coca_cola.png" width="150" height="150" alt="Photo of a Coke" class="order-product-image">
+            <mat-card-content>
+              <p class="prod-name">{{ prod.name }}</p>
+              <p>{{ prod.description }}</p>
+              <p class="prod-price">{{ prod.value | brlPipe}}</p>
+            </mat-card-content>
+          </mat-card>
+    </div>
+  </mat-dialog-content>
+}@else {
+  <p class="products-empty">PEDIDO NÃO CONTEM PRODUTOS</p>
+}
+
