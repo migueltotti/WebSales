@@ -81,13 +81,13 @@ export class ProductsComponent implements OnInit{
   ) { }
 
   ngOnInit() {
-    this.dataSource = productsTest;
+    /*this.dataSource = productsTest;
     this.length = 4;
     this.pageSize = 10;
     this.pageIndex = 1 - 1;
-    this.isAdmin = false;
+    this.isAdmin = false;*/
 
-    /*this.api.getProducts(this.httpOptions)
+    this.api.getProducts(this.httpOptions)
     .subscribe({
       next: (res) => {
         this.dataSource = res.body || [];
@@ -113,7 +113,7 @@ export class ProductsComponent implements OnInit{
 
     if(isPlatformBrowser(this.platformId)) {
       this.isAdmin = this.auth.isAdmin();
-    }*/
+    }
   }
 
   checkRow(row: any){

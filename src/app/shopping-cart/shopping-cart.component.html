@@ -1,0 +1,51 @@
+<div class="cart-container">
+    <mat-card *ngFor="let prod of products" class="example-card">
+        <mat-grid-list cols="10" rowHeight="150px">
+            <mat-grid-tile colspan="1">
+                <mat-card-actions>
+                    <mat-checkbox [checked]="true"></mat-checkbox>
+                </mat-card-actions>
+            </mat-grid-tile>
+
+            <mat-grid-tile colspan="2">
+                <img mat-card-image src="/coca_cola.png" width="100" height="100" alt="{{prod.name}}" class="order-product-image">
+            </mat-grid-tile>
+
+            <mat-grid-tile colspan="5" class="prof-info-div">
+                <div class="prod-info">
+                    <mat-card-content>
+                        <mat-card-title class="prod-name-info-div">{{ prod.name }}</mat-card-title>
+                        <mat-card-subtitle>Price: {{ prod.value| currency }}</mat-card-subtitle>
+                        <p>{{ prod.description }}</p>
+                    </mat-card-content>
+                </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile colspan="2">
+                <mat-card-content>
+                    <div class="quantity-controls">
+                        <button mat-button color="primary" (click)="increaseQuantity(prod.productId)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <span>{{ prod.stockQuantity }}</span>
+                        <button mat-button color="primary" class="decrease-quantity" (click)="decreaseQuantity(prod.productId)">
+                            <mat-icon>minimize</mat-icon>
+                        </button>
+                    </div>
+                    <div class="remove-button">
+                        <button mat-button color="warn" (click)="removeFromCart(prod)">
+                          <mat-icon>delete</mat-icon> Remove
+                        </button>
+                    </div>
+                </mat-card-content>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-card>
+    <mat-divider></mat-divider>
+</div>
+    
+<div class="cart-summary">
+    <h3>Total: {{ calculateTotal() | currency }}</h3>
+    <button mat-raised-button color="primary" (click)="checkout()">Checkout</button>
+</div>
+  

@@ -11,6 +11,7 @@ import { ProductDeleteComponent } from './product-delete/product-delete.componen
 import { ProductCreateComponent } from './product-create/product-create.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserDeleteComponent } from './user-delete/user-delete.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 export const routes: Routes = [
     {
@@ -67,6 +68,11 @@ export const routes: Routes = [
         path: 'user-delete/:id',
         title: 'User delete',
         component: UserDeleteComponent
+    },
+    {
+        path: 'shopping-cart/:id',
+        title: 'Shopping cart',
+        component: ShoppingCartComponent
     },
     { 
         path: '',
