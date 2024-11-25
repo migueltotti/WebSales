@@ -4,6 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { ApiService } from '../../services/api.service';
 import { Product } from '../../models/product';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-product-delete',
@@ -25,7 +26,8 @@ export class ProductDeleteComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private api: ApiService
+    private api: ApiService,
+    private snackBar: SnackbarService
   ){}
 
   ngOnInit(){
@@ -50,9 +52,11 @@ export class ProductDeleteComponent implements OnInit {
       next: (data) => {
         console.log(data);
         this.router.navigate(['/products']);
+        this.snackBar.openSuccessSnackBar('Product Deleted Successfuly')
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.openErrorSnackBar('Unable to Delete Product! Try again later');
       },
       complete: () => {
         console.log('request completed: deleteProduct');

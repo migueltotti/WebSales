@@ -23,7 +23,7 @@ import { switchMap } from 'rxjs';
 import { MatDialog, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Product } from '../../models/product';
 
-/*const userTest = new User(
+const userTest = new User(
   1,
   'Miguel Totti de Oliveira',
   'migueltotti2005@gmail.com',
@@ -63,7 +63,7 @@ const ordersTest = [
   new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
   new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
   new Order(23, 1231, '09/10/2024', 1, 4, productsTest),
-]*/
+]/**/
 
 export interface DialogData {
   order: Order;
@@ -145,11 +145,11 @@ export class UserComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.email = sessionStorage.getItem('email')!;
-    //this.email = userTest.email;
+    //this.email = sessionStorage.getItem('email')!;
+    this.email = userTest.email;
 
 
-    this.userServ.getUserByEmail(this.email)
+    /*this.userServ.getUserByEmail(this.email)
     .pipe(
       switchMap(user => {
         this.user = user;
@@ -164,10 +164,10 @@ export class UserComponent implements OnInit{
       error: (err) => {
         console.log(err);
       }
-    });
+    });*/
     
-    //this.user = userTest;
-    //this.orders = ordersTest;
+    this.user = userTest;
+    this.orders = ordersTest;
 
     this.breakpointObserver.observe([
       Breakpoints.XSmall,

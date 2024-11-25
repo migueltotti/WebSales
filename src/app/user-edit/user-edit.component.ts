@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 const userTest = new User(
   1,
@@ -59,11 +60,12 @@ export class UserEditComponent implements OnInit {
     private userServ: UserService,
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private snackBar: SnackbarService
   ) {}
 
   ngOnInit(){
-    //this.getUser(this.route.snapshot.params['id']);
+    this.getUser(this.route.snapshot.params['id']);
 
     this.userForm = this.formBuilder.group({  
       'userId': [null],
@@ -77,7 +79,7 @@ export class UserEditComponent implements OnInit {
       'role' : [null, Validators.required],
     });
 
-    this.userForm?.setValue({
+    /*this.userForm?.setValue({
       userId: userTest.userId,
       name: userTest.name,
       email: userTest.email,
@@ -87,7 +89,7 @@ export class UserEditComponent implements OnInit {
       dateBirth: this.formatDate(userTest.dateBirth),
       affiliateId: userTest.affiliateId,
       role: userTest.role
-    });
+    });*/
   }
 
   getUser(id: number){
@@ -117,9 +119,11 @@ export class UserEditComponent implements OnInit {
       next: (res) => {
         console.log(res);
         this.router.navigate(['/user']);
+        this.snackBar.openSuccessSnackBar('User Updated Successfuly');
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.openErrorSnackBar('Unable to update User! Try again later');
       },
       complete: () => {
         console.log('request completed: updateUser');

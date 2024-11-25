@@ -11,6 +11,7 @@ import { Category } from '../../models/category';
 import { CategoryService } from '../../services/category.service';
 import { NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-product-create',
@@ -42,7 +43,8 @@ export class ProductCreateComponent implements OnInit{
     private api: ApiService,
     private catService: CategoryService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private snackBar: SnackbarService
   ) {}
 
   ngOnInit(): void {
@@ -80,9 +82,11 @@ export class ProductCreateComponent implements OnInit{
       next: (res) => {
         console.log(res);
         this.router.navigate(['/products']);
+        this.snackBar.openSuccessSnackBar('Product Added Successfuly');
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.openErrorSnackBar('Unable to Add Product! Try again later');
       }
     });
   }
@@ -104,3 +108,4 @@ export class ProductCreateComponent implements OnInit{
     }
   }
 }
+

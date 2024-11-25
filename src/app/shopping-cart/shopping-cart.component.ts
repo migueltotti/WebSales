@@ -8,12 +8,28 @@ import { NgFor } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { BrlPipe } from '../extensions/valuePipe';
 
 const productsTest = [
   new Product(1, 'prodTeste1', 'prodTeste1', 10, 1, 10, 'prodTeste.jpg', 1),
   new Product(2, 'prodTeste2', 'prodTeste2', 20, 1, 10, 'prodTeste.jpg', 1),
   new Product(3, 'prodTeste3', 'prodTeste3', 30, 1, 10, 'prodTeste.jpg', 1),
   new Product(4, 'prodTeste4', 'prodTeste4', 40, 1, 10, 'prodTeste.jpg', 1),
+  new Product(5, 'prodTeste1', 'prodTeste1', 10, 1, 10, 'prodTeste.jpg', 1),
+  new Product(6, 'prodTeste2', 'prodTeste2', 20, 1, 10, 'prodTeste.jpg', 1),
+  new Product(7, 'prodTeste3', 'prodTeste3', 30, 1, 10, 'prodTeste.jpg', 1),
+  new Product(8, 'prodTeste4', 'prodTeste4', 40, 1, 10, 'prodTeste.jpg', 1),
+]
+
+const productsShoppingCart = [
+  { prod: new Product(1, 'prodTeste1', 'prodTeste1', 10, 1, 10, 'prodTeste.jpg', 1), selected: true },
+  { prod: new Product(2, 'prodTeste2', 'prodTeste2', 20, 1, 10, 'prodTeste.jpg', 1), selected: true },
+  { prod: new Product(3, 'prodTeste3', 'prodTeste3', 30, 1, 10, 'prodTeste.jpg', 1), selected: true },
+  { prod: new Product(4, 'prodTeste4', 'prodTeste4', 40, 1, 10, 'prodTeste.jpg', 1), selected: true },
+  { prod: new Product(5, 'prodTeste1', 'prodTeste1', 10, 1, 10, 'prodTeste.jpg', 1), selected: true },
+  { prod: new Product(6, 'prodTeste2', 'prodTeste2', 20, 1, 10, 'prodTeste.jpg', 1), selected: true },
+  { prod: new Product(7, 'prodTeste3', 'prodTeste3', 30, 1, 10, 'prodTeste.jpg', 1), selected: true },
+  { prod: new Product(8, 'prodTeste4', 'prodTeste4', 40, 1, 10, 'prodTeste.jpg', 1), selected: true },
 ]
 
 @Component({
@@ -27,31 +43,33 @@ const productsTest = [
     NgFor,
     MatButton,
     MatIcon,
-    MatGridListModule
+    MatGridListModule,
+    BrlPipe
   ],
   templateUrl: './shopping-cart.component.html',
   styleUrl: './shopping-cart.component.scss'
 })
 export class ShoppingCartComponent {
-  products!: Product[];
+  products!: {prod: Product, selected: boolean}[];
   quantity!: number;
 
   constructor() {
-    this.products = productsTest;
+    //this.products = productsTest;
+    this.products = productsShoppingCart;
   }
 
   decreaseQuantity(prodId: number) {
-    var prod = this.products.find(p => p.productId == prodId);
+    var prod = this.products.find(p => p.prod.productId == prodId);
 
-    if(prod?.stockQuantity! > 0){
-      prod!.stockQuantity--;
+    if(prod?.prod.stockQuantity! > 0){
+      prod!.prod.stockQuantity--;
     }
   }
   
   increaseQuantity(prodId: number) {
-    var prod = this.products.find(p => p.productId == prodId);
+    var prod = this.products.find(p => p.prod.productId == prodId);
 
-    prod!.stockQuantity++;
+    prod!.prod.stockQuantity++;
   }
 
   checkout() {
@@ -62,7 +80,25 @@ export class ShoppingCartComponent {
     var total = 0;
 
     for(var i = 0; i < this.products.length; i++){
-      total += this.products[i].value;
+      if(this.products[i].selected == true){
+        total += this.products[i].prod.value;
+      }
+    }
+
+    return total;
+  }
+
+  changeSelectState(p: {prod: Product, selected: boolean}){
+    p.selected = p.selected ? false : true;
+  }
+
+  getTotalSelectItens() : number{
+    var total = 0;
+
+    for(var p of this.products){
+      if(p.selected == true){
+        total++;
+      }
     }
 
     return total;
@@ -111,4 +147,11 @@ export class ShoppingCartComponent {
     <button mat-raised-button color="primary" (click)="checkout()">Checkout</button>
 </div>
   
+
+
+
+<div class="cart-summary">
+            <h3>Total: {{ calculateTotal() | currency }}</h3>
+            <button mat-raised-button color="primary" (click)="checkout()">Checkout</button>
+        </div>
 */

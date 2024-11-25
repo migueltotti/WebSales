@@ -11,6 +11,7 @@ import { Category } from '../../models/category';
 import { CategoryService } from '../../services/category.service';
 import { NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-product-edit',
@@ -47,7 +48,8 @@ export class ProductEditComponent implements OnInit {
     private catServ: CategoryService,
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private snackBar: SnackbarService
   ) {}
 
   ngOnInit(){
@@ -90,12 +92,12 @@ export class ProductEditComponent implements OnInit {
 
   updateProduct() {
     this.isLoadingResults = true;
-    console.log("botao acionado");
+    //console.log("botao acionado");
 
     const product = this.api.toProduct(this.productForm!);
     //const product = this.productForm?.value;
-    console.log('Depois do toProduct: ');
-    console.log(product);
+    //console.log('Depois do toProduct: ');
+    //console.log(product);
     
     
     this.api.updateProduct(this.productId, product)
@@ -104,10 +106,12 @@ export class ProductEditComponent implements OnInit {
         console.log(res);
         this.isLoadingResults = false;
         this.router.navigate(['/products']);
+        this.snackBar.openSuccessSnackBar('Product Updated Successfuly');
       },
       error: (err) => {
         console.log(err);
         this.isLoadingResults = false;
+        this.snackBar.openErrorSnackBar('Unable to Updated Product! Try again later');
       },
       complete: () => {
         console.log('request completed: updateProduct');

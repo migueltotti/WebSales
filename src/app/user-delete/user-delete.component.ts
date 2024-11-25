@@ -6,6 +6,7 @@ import { ApiService } from '../../services/api.service';
 import { Product } from '../../models/product';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
+import { SnackbarService } from '../../services/snackbar.service';
 
 const userTest = new User(
   1,
@@ -39,11 +40,12 @@ export class UserDeleteComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private userServ: UserService
+    private userServ: UserService,
+    private snackBar: SnackbarService
   ){}
 
   ngOnInit(){
-    /*this.userId = this.route.snapshot.params['id'];
+    this.userId = this.route.snapshot.params['id'];
     this.userServ.getUserById(this.userId)
     .subscribe({
       next: (data) => {
@@ -55,8 +57,8 @@ export class UserDeleteComponent implements OnInit {
       complete: () => {
         console.log('user request completed!');
       }
-    });*/
-    this.user = userTest;
+    });
+    //this.user = userTest;
   }
 
   confirmDelete(){
@@ -66,9 +68,11 @@ export class UserDeleteComponent implements OnInit {
         console.log(data);
         this.deleteUserAuth();
         this.router.navigate(['/home']);
+        this.snackBar.openSuccessSnackBar('User Deleted Successfuly');
       },
       error: (err) => {
         console.log(err);
+        this.snackBar.openErrorSnackBar('Unable to delete User! Try again later');
       },
       complete: () => {
         console.log('request completed: deleteUser');

@@ -3,7 +3,7 @@
 </div>
 <button mat-flat-button *ngIf="isAdmin" class="create-button" routerLink='/product-create' selected>Novo Produto</button>
 <mat-table 
-  [dataSource]="dataSource"  
+  [dataSource]="dataSource" 
   class="mat-elevation-z8 prod-table"
   [ngStyle]="{'height': isAdmin ? '74dvh' : '80dvh'}">
 
