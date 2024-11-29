@@ -14,7 +14,6 @@ import {
   imports: [
     MatButtonModule, 
     MatSnackBarLabel, 
-    MatSnackBarActions, 
     MatSnackBarAction
   ],
   templateUrl: './failed-snack-bar.component.html',

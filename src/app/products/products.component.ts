@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, PLATFORM_ID, Inject, ComponentFactoryResolver } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Product } from '../../models/product';
@@ -13,6 +13,9 @@ import { HttpHeaders } from '@angular/common/http';
 import { PaginationInfo } from '../../models/paginationInfo';
 import { PaginationService } from '../../services/pagination.service';
 import { QueryStringParameters } from '../../models/queryStringParameters';
+import { ShoppingCartService } from '../../services/shopping-cart.service';
+import { throwError } from 'rxjs';
+import { SnackbarService } from '../../services/snackbar.service';
 
 const productsTest = [
   new Product(1, 'prodTeste1', 'prodTeste1', 10, 1, 10, 'prodTeste.jpg', 1),
@@ -77,7 +80,9 @@ export class ProductsComponent implements OnInit{
     @Inject(PLATFORM_ID) private platformId: Object,
     private api: ApiService,
     private auth: AuthService,
-    private pag: PaginationService
+    private shoppingCartService: ShoppingCartService,
+    private pag: PaginationService,
+    private snackBar: SnackbarService
   ) { }
 
   ngOnInit() {
@@ -152,6 +157,27 @@ export class ProductsComponent implements OnInit{
       }
     })
   }
+
+  addToShoppingCart(prodId: number) {
+    var userId = this.auth.getUserIdFromStorage();
+
+    if(userId != null){
+      this.shoppingCartService
+      .addProductToShoppingCartByUserId(userId, prodId, 1)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+        }, 
+        error: (err) => {
+          console.log(err);
+        }
+      });
+    }
+    else{
+      this.snackBar.openErrorSnackBar('User not logged! Login to complete action.')
+    }
+  }
+  
 }
 
 /*

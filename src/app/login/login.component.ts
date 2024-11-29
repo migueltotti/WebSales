@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 import { error } from 'console';
 import { AuthService } from '../../services/auth.service';
 import { SnackbarService } from '../../services/snackbar.service';
+import { switchMap } from 'rxjs';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -42,6 +44,7 @@ export class LoginComponent {
     private router: Router,
     private api: ApiService,
     private auth: AuthService,
+    private userServ: UserService,
     private snackBar: SnackbarService
   ) {
     this.loginForm = this.fb.group({
@@ -53,24 +56,28 @@ export class LoginComponent {
   addLogin(form: NgForm) {
     this.isLoadingResults = true;
     this.api.Login(form)
-    .subscribe({ 
-      next: (res) => {
-      this.dataSource = res;
-      sessionStorage.setItem("jwt", this.dataSource!.token);
-      this.auth.setUserEmailToStorage();
-      this.isLoadingResults = false;
-      this.router.navigate(['/home']);
-      this.snackBar.openSuccessSnackBar('Welcome! Success Login');
-
-    }, error: (err) => {
-      console.log(err);
-      this.isLoadingResults = false;
-      this.snackBar.openSuccessSnackBar('Unable to Login! Try again later');
-
-    }, complete: () => {
-      console.log('request completed')
-    }
-    })
+    .pipe(
+      switchMap(login => {
+        this.dataSource = login;
+        sessionStorage.setItem("jwt", this.dataSource!.token);
+        this.auth.setUserEmailToStorage();
+        this.isLoadingResults = false;
+        this.router.navigate(['/home']);
+        this.snackBar.openSuccessSnackBar('Welcome! Success Login');
+        return this.userServ.getUserByEmail(sessionStorage.getItem('email')!)
+      })
+    ).subscribe({ 
+      next: (user) => {
+        console.log(user.userId);
+        this.auth.setUserIdToStorage(user.userId);
+      }, error: (err) => {
+        console.log(err);
+        this.isLoadingResults = false;
+        this.snackBar.openSuccessSnackBar('Unable to Login! Try again later');
+      }, complete: () => {
+        console.log('request completed')
+      }
+    });
   }
 
   clickEvent() {

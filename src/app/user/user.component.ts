@@ -145,16 +145,16 @@ export class UserComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    //this.email = sessionStorage.getItem('email')!;
-    this.email = userTest.email;
+    this.userId = parseInt(sessionStorage.getItem('userId')!, 10);
+    //this.email = userTest.email;
 
 
-    /*this.userServ.getUserByEmail(this.email)
+    this.userServ.getUserById(this.userId)
     .pipe(
       switchMap(user => {
         this.user = user;
         console.log(user);
-        return this.orderServ.getOrdersWithProductsByUserId(user.userId);
+        return this.orderServ.getOrdersWithProductsByUserId(this.userId);
       })
     ).subscribe({
       next: (orders) => {
@@ -164,10 +164,10 @@ export class UserComponent implements OnInit{
       error: (err) => {
         console.log(err);
       }
-    });*/
+    });
     
-    this.user = userTest;
-    this.orders = ordersTest;
+    /*this.user = userTest;
+    this.orders = ordersTest;*/
 
     this.breakpointObserver.observe([
       Breakpoints.XSmall,
@@ -238,23 +238,15 @@ export class UserComponent implements OnInit{
   standalone: true,
   imports: [
     MatCard,
-    MatCardHeader,
     MatCardContent,
-    MatCardActions,
-    MatCardSubtitle,
-    MatCardTitle,
     MatTableModule,
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
     MatGridListModule,
-    MatDivider,
-    DatePipe,
     BrlPipe,
     NgFor,
-    NgIf,
     NgOptimizedImage,
-    RouterLink,
     MatDialogModule
 ]
 })

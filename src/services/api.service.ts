@@ -15,6 +15,9 @@ var httpOptions = {headers: new HttpHeaders({
 })};
 var token: string | null;
 
+const Kg = 1;
+const Uni = 2;
+
 
 @Injectable({
   providedIn: 'root'
@@ -122,6 +125,25 @@ export class ApiService {
     );
 
     return product;
+  }
+
+  getProductAmount(products: Product[], prodId: number) : number{
+    var amount = 0;
+
+    // Funcao para aumentar a quantidade do produto escolhido baseado no TypeValue
+    // Para Kg => 100g em 100g
+    // Para Uni => 1 em 1
+
+    /*products.forEach(p => {
+      if(p.productId == prodId){
+        switch (p.typeValue){
+          case Kg:
+            amount = 
+        }
+      }
+    })*/
+
+    return amount;
   }
 
   private handleError<T> (operation = 'operation', result?: T){

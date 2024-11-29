@@ -45,14 +45,14 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-flat-button class="add_shopping_cart"> 
+            <button mat-flat-button class="add_shopping_cart" (click)="addToShoppingCart(element.productId)"> 
               <mat-icon>add_shopping_cart</mat-icon>
             </button>
             <button mat-flat-button *ngIf="isAdmin" class="edit-button" [routerLink]="['/product-edit', element.productId]">Editar</button>
             <button mat-flat-button *ngIf="isAdmin" color="warn" [routerLink]="['/product-delete', element.productId]">Deletar</button>
           </mat-menu>
         }@else {
-          <button mat-flat-button class="add_shopping_cart"> 
+          <button mat-flat-button class="add_shopping_cart" (click)="addToShoppingCart(element.productId)"> 
             <mat-icon>add_shopping_cart</mat-icon>
           </button>
         }
