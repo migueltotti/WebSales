@@ -6,19 +6,23 @@
   <a class="title" routerLink="/home">WebSales</a>
 
   <button *ngIf="showButtons" mat-button routerLink="/products" class="nav-link-first">Produtos</button>
-  <button *ngIf="showButtons" mat-button routerLink="/orders" class="nav-link">Pedidos</button>
-  <button *ngIf="showButtons" mat-button routerLink="/login" class="nav-link">Login</button>
-  <button *ngIf="showButtons" mat-button routerLink="/logout" class="nav-link">Logout</button>
+  <button *ngIf="showButtons" mat-button (click)="handleNavigation('/orders')" class="nav-link">Pedidos</button>
 
   <span class="spacer"></span>
 
-  <button mat-icon-button [routerLink]="['/shopping-cart', 1]" aria-label="Shopping cart">
+  <button mat-icon-button (click)="handleNavigation('/shopping-cart', 1)" aria-label="Shopping cart">
     <mat-icon>shopping_cart</mat-icon>
   </button>
 
-  <button mat-icon-button routerLink="/user" aria-label="User profile">
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="User profile">
     <mat-icon>account_circle</mat-icon>
   </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/user">Informações de Usuario</button>
+    <button *ngIf="!logged" mat-menu-item routerLink="/login">Login</button>
+    <button *ngIf="logged"mat-menu-item (click)="logout()">Logout</button>
+  </mat-menu>
+
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" mode="over" [class.sidenav-opened]="drawer.opened">
@@ -30,10 +34,6 @@
       <a mat-list-item routerLink="/orders">Pedidos</a>
       <br>
       <br>
-      <a mat-list-item routerLink="/login">Login</a>
-      <br>
-      <br>
-      <a mat-list-item routerLink="/logout">Logout</a>
     </mat-nav-list>
   </mat-sidenav>
 

@@ -9,7 +9,7 @@ import { request } from 'http';
 import { QueryStringParameters } from '../models/queryStringParameters';
 
 const apiUrl = 'https://localhost:44373/api/Products';
-const apiLoginUrl = 'https://localhost:44373/api/Auth/Login';
+//const apiLoginUrl = 'https://localhost:44373/api/Auth/Login';
 var httpOptions = {headers: new HttpHeaders({
   "Content-Type": "application/json"
 })};
@@ -32,12 +32,12 @@ export class ApiService {
     httpOptions = {headers: new HttpHeaders({"Authorization" : "Bearer " + token, "Content-Type": "application/json"})}
   }
 
-  Login (loginModel: any) {
+  /*Login (loginModel: any) {
     return this.http.post<LoginModel>(apiLoginUrl, loginModel).pipe(
       tap(() => console.log('Login usuario com email =' + loginModel.email)),
       catchError(this.handleError<LoginModel>('Login'))
     );
-  }
+  }*/
 
   getProducts(
     httpOp: {headers: HttpHeaders} = httpOptions,

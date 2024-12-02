@@ -16,6 +16,8 @@ import { QueryStringParameters } from '../../models/queryStringParameters';
 import { ShoppingCartService } from '../../services/shopping-cart.service';
 import { throwError } from 'rxjs';
 import { SnackbarService } from '../../services/snackbar.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UserNotloggedDialogComponent } from '../snack-bar/user-notlogged-dialog/user-notlogged-dialog.component';
 
 const productsTest = [
   new Product(1, 'prodTeste1', 'prodTeste1', 10, 1, 10, 'prodTeste.jpg', 1),
@@ -82,7 +84,8 @@ export class ProductsComponent implements OnInit{
     private auth: AuthService,
     private shoppingCartService: ShoppingCartService,
     private pag: PaginationService,
-    private snackBar: SnackbarService
+    private snackBar: SnackbarService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -179,56 +182,3 @@ export class ProductsComponent implements OnInit{
   }
   
 }
-
-/*
-@Component({
-  selector: 'dialog-animations-example-dialog',
-  templateUrl: 'dialog-animations-example-dialog.html',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogActions,
-    MatDialogClose,
-    MatDialogTitle,
-    MatDialogContent,
-    RouterLink
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DialogAnimationsExampleDialog {
-
-  constructor(private dialogRef: MatDialogRef<DialogAnimationsExampleDialog>) {}
-  //readonly dialogRef = inject(MatDialogRef<DialogAnimationsExampleDialog>);
-}
-
-// (click)="checkRow(row)"
-// [class.demo-row-is-clicked]="isRowSelected(row)"
-
-
-<!-- ProductId Column -->
-    <ng-container matColumnDef="productId">
-      <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.productId}} </mat-cell>
-    </ng-container>
-
-    <!-- Description Column -->
-    <ng-container matColumnDef="description">
-      <mat-header-cell *matHeaderCellDef> Descricao </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
-    </ng-container>
-
-
-      <!-- ImageUrl Column -->
-    <ng-container matColumnDef="imageUrl">
-        <mat-header-cell *matHeaderCellDef> Imagem </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.imageUrl}} </mat-cell>
-      </ng-container>
-
-      
-      <!-- CategoryId Column -->
-    <ng-container matColumnDef="categoryId">
-        <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.categoryId}} </mat-cell>
-      </ng-container>
-
-*/

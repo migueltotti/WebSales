@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
+import { LoginModel } from '../models/loginModel';
+import { HttpClient } from '@angular/common/http';
+
+const apiLoginUrl = 'https://localhost:44373/api/Auth/Login';
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +12,18 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthService {
 
   private jwtHelper = new JwtHelperService();
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
 
-  constructor() {}
+  isLoggedIn$ = this.isLoggedInSubject.asObservable();
+
+  constructor(private http: HttpClient) {}
+
+  Login (loginModel: any) : Observable<LoginModel>{
+    return this.http.post<LoginModel>(apiLoginUrl, loginModel).pipe(
+      tap(() => console.log('Login usuario com email =' + loginModel.email)),
+      catchError(this.handleError<LoginModel>('Login'))
+    );
+  }
 
   getToken(): string | null {
     if(typeof sessionStorage !== "undefined"){
@@ -16,6 +31,11 @@ export class AuthService {
     }
     
     return null;
+  }
+
+  setJwtTokenToStorage(token: string) {
+    sessionStorage.setItem('jwt', token);
+    this.isLoggedInSubject.next(true); // Notifica que o usuário está logado
   }
 
   isAuthenticated(): boolean {
@@ -66,5 +86,21 @@ export class AuthService {
     const userId = parseInt(sessionStorage.getItem('userId')!, 10);
     
     return userId;
+  }
+
+  logoutUser(){
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('jwt');
+    sessionStorage.removeItem('email');
+
+    this.isLoggedInSubject.next(false); // Notifica que o usuário não está logado
+  }
+
+
+  private handleError<T> (operation = 'operation', result?: T){
+    return (error: any): Observable<T> => {
+      console.error(error);
+      return of(result as T);
+    }
   }
 }

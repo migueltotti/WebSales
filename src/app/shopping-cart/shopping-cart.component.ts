@@ -75,6 +75,7 @@ export class ShoppingCartComponent implements OnInit {
     this.shoppingCartServ.updateProductAmountFromShoppingCartProductByUserId(this.userId, prod!.product.productId, prod!.amount)
     .subscribe({
       next: (data) => {
+        this.shoppingCart = data;
         console.log(data);
         this.inAction = false;
       }
@@ -101,6 +102,7 @@ export class ShoppingCartComponent implements OnInit {
     .subscribe({
       next: (data) => {
         console.log(data);
+        this.shoppingCart = data;
         this.inAction = false;
       }
     })
@@ -133,7 +135,8 @@ export class ShoppingCartComponent implements OnInit {
       this.shoppingCartServ.checkProductFromShoppingCartByUserId(this.userId, prod.product.productId)
       .subscribe({
         next: (data) => {
-          console.log(data)
+          console.log(data);
+          this.shoppingCart = data;
           this.inAction = false;
         }
       });
@@ -142,7 +145,8 @@ export class ShoppingCartComponent implements OnInit {
       this.shoppingCartServ.uncheckProductFromShoppingCartByUserId(this.userId, prod.product.productId)
       .subscribe({
         next: (data) => {
-          console.log(data)
+          console.log(data);
+          this.shoppingCart = data;
           this.inAction = false;
         }
       });
@@ -174,6 +178,7 @@ export class ShoppingCartComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
+        this.snackBarServ.openErrorSnackBar('Error while removing product!');
       }
     });
   }

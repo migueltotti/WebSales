@@ -55,11 +55,11 @@ export class LoginComponent {
 
   addLogin(form: NgForm) {
     this.isLoadingResults = true;
-    this.api.Login(form)
+    this.auth.Login(form)
     .pipe(
       switchMap(login => {
         this.dataSource = login;
-        sessionStorage.setItem("jwt", this.dataSource!.token);
+        this.auth.setJwtTokenToStorage(this.dataSource.token);
         this.auth.setUserEmailToStorage();
         this.isLoadingResults = false;
         this.router.navigate(['/home']);
@@ -89,19 +89,3 @@ export class LoginComponent {
     }
   }
 }
-
-/*
-<button
-          mat-icon-button
-          matSuffix
-          (click)="clickEvent($event)"
-          [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hide()">
-          <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-
-        clickEvent(event: MouseEvent) {
-    this.hide.set(!this.hide());
-    event.stopPropagation();
-  }
-*/
