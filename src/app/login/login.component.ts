@@ -73,7 +73,7 @@ export class LoginComponent {
       }, error: (err) => {
         console.log(err);
         this.isLoadingResults = false;
-        this.snackBar.openSuccessSnackBar('Unable to Login! Try again later');
+        this.snackBar.openErrorSnackBar('Unable to Login! Try again later');
       }, complete: () => {
         console.log('request completed')
       }

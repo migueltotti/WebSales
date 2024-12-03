@@ -26,16 +26,16 @@
                     <mat-grid-tile colspan="3">
                         <mat-card-content class="prod-actions">
                             <div class="quantity-controls">
-                                <button mat-button color="primary" (click)="increaseQuantity(p.product.productId)">
+                                <button mat-button color="primary" (click)="increaseQuantity(p.product.productId)" [disabled]="inAction">
                                     <mat-icon>add</mat-icon>
                                 </button>
                                 <span>{{ p.amount | number : (p.product.typeValue == Kg ? '1.3-3' : '1.0-0') }}</span>
-                                <button mat-button color="primary" class="decrease-quantity" (click)="decreaseQuantity(p.product.productId)">
+                                <button mat-button color="primary" class="decrease-quantity" (click)="decreaseQuantity(p.product.productId)" [disabled]="inAction">
                                     <mat-icon>minimize</mat-icon>
                                 </button>
                             </div>
                             <div class="remove-button">
-                                <button mat-button color="warn" (click)="removeFromCart(p.product.productId)">
+                                <button mat-button color="warn" (click)="removeFromCart(p.product.productId)" [disabled]="inAction">
                                 <mat-icon>delete</mat-icon> Remove
                                 </button>
                             </div>
@@ -60,7 +60,7 @@
                 </div>
             </mat-card-content>
             <mat-card-actions class="sumary-action">
-                <button mat-raised-button  class="checkout-btn" color="primary" [disabled]="getTotalSelectItens() == 0" (click)="checkout()">Finalizar</button>
+                <button mat-raised-button class="checkout-btn" color="primary" [disabled]="getTotalSelectItens() == 0 || inAction" (click)="checkout()">Finalizar</button>
             </mat-card-actions>
         </mat-card>
     </mat-grid-tile>

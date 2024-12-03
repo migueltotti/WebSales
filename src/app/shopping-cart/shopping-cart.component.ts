@@ -112,19 +112,6 @@ export class ShoppingCartComponent implements OnInit {
     console.log('checkout');
   }
 
-  calculateTotal(): number {
-    var total = 0;
-
-    this.shoppingCart.products.forEach(
-      p => {
-        if(p.checked == true)
-          total += (p.product.value * p.amount)
-      }
-    )
-
-    return total;
-  }
-
   changeCheckState(prod: ProductChecked){
     this.inAction = true;
     prod.checked = prod.checked ? false : true;
@@ -201,49 +188,3 @@ export class ShoppingCartComponent implements OnInit {
   }
 
 }
-
-/* 
-<div class="cart-container">
-    <mat-card *ngFor="let prod of products" class="example-card">
-        <mat-grid-list cols="3">
-            <img mat-card-image src="/coca_cola.png" width="100" height="100" alt="{{prod.name}}" class="order-product-image">
-
-            <mat-card-content>
-                <mat-card-title>{{ prod.name }}</mat-card-title>
-                <mat-card-subtitle>Price: {{ prod.value| currency }}</mat-card-subtitle>
-                <p>{{ prod.description }}</p>
-                <div class="quantity-controls">
-                    <button mat-button color="primary" (click)="decreaseQuantity(prod.productId)">
-                    <mat-icon>add</mat-icon>
-                    </button>
-                    <span>{{ prod.stockQuantity }}</span>
-                    <button mat-button color="primary" class="decrease-quantity" (click)="increaseQuantity(prod.productId)">
-                    <mat-icon>minimize</mat-icon>
-                    </button>
-                </div>
-            </mat-card-content>
-
-            <mat-card-actions>
-            <mat-checkbox [checked]="true">Select</mat-checkbox>
-            <button mat-button color="warn" (click)="removeFromCart(prod)">Remove</button>
-
-            </mat-card-actions>
-        </mat-grid-list>
-    </mat-card>
-  
-    <mat-divider></mat-divider>
-</div>
-    
-<div class="cart-summary">
-    <h3>Total: {{ calculateTotal() | currency }}</h3>
-    <button mat-raised-button color="primary" (click)="checkout()">Checkout</button>
-</div>
-  
-
-
-
-<div class="cart-summary">
-            <h3>Total: {{ calculateTotal() | currency }}</h3>
-            <button mat-raised-button color="primary" (click)="checkout()">Checkout</button>
-        </div>
-*/
