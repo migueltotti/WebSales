@@ -2,30 +2,53 @@
     <p class="title">Catalogo de Produtos</p>
 </div>
 <button mat-flat-button *ngIf="isAdmin" class="create-button" routerLink='/product-create' selected>Novo Produto</button>
+
+<div class="prod-list" [ngStyle]="{'height': isAdmin ? '74%' : '80%'}">
+  <mat-card *ngFor="let prod of products" class="example-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title class="prod-number">{{ prod.name }}</mat-card-title>
+    </mat-card-header>
+    <img mat-card-image ngSrc="/coca_cola.png" width="170" height="170" alt="Photo of a Coke" class="order-product-image">
+    <mat-card-content>
+      <p class="prod-description">{{prod.description}}</p>
+      <p class="prod-price">R$ {{ prod.value| number: '1.2-2' }} - {{ typeValue.get(prod.typeValue) }}</p>
+      <div class="order-div-status-prod">
+        <button mat-flat-button class="add_shopping_cart" (click)="addToShoppingCart(prod.productId)"> 
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
+        <button mat-flat-button *ngIf="isAdmin" class="edit-button" [routerLink]="['/product-edit', prod.productId]">
+          <mat-icon style="margin-right: -6px;">edit</mat-icon>
+        </button>
+        <button mat-flat-button *ngIf="isAdmin" color="warn" class="delete-btn" [routerLink]="['/product-delete', prod.productId]">
+          <mat-icon style="margin-right: -6px;">delete</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<!--
 <mat-table 
   [dataSource]="dataSource" 
   class="mat-elevation-z8 prod-table"
   [ngStyle]="{'height': isAdmin ? '74dvh' : '80dvh'}">
 
-    <!-- Name Column -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
     </ng-container>
   
-    <!-- Value Column -->
+ 
     <ng-container matColumnDef="value">
       <mat-header-cell *matHeaderCellDef> Valor </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
     </ng-container>
   
-    <!-- TypeValue Column -->
+
     <ng-container matColumnDef="typeValue">
       <mat-header-cell *matHeaderCellDef> Tipo valor </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.typeValue}} </mat-cell>
     </ng-container>
 
-    <!-- StockQuantity Column -->
     <ng-container matColumnDef="stockQuantity">
         <mat-header-cell *matHeaderCellDef> Quantidade </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.stockQuantity}} </mat-cell>
@@ -34,11 +57,12 @@
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef> </th>
       <td mat-cell *matCellDef="let element"> 
-        <!--<button mat-flat-button class="add_shopping_cart"> 
+
+        <button mat-flat-button class="add_shopping_cart"> 
           <mat-icon>add_shopping_cart</mat-icon>
         </button>
         <button mat-flat-button *ngIf="isAdmin" class="edit-button" [routerLink]="['/product-edit', element.productId]">Editar</button>
-        <button mat-flat-button *ngIf="isAdmin" color="warn" [routerLink]="['/product-delete', element.productId]">Deletar</button>-->
+        <button mat-flat-button *ngIf="isAdmin" color="warn" [routerLink]="['/product-delete', element.productId]">Deletar</button>
       
         @if(isAdmin){
           <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -64,7 +88,9 @@
     *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row 
     *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+</mat-table>-->
+
+
 <mat-paginator #paginator
                class="demo-paginator"
                (page)="handlePageEvent($event)"

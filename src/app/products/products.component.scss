@@ -1,34 +1,3 @@
-::ng-deep .mat-mdc-table {
-    height: 87dvh;
-    min-width: 98% !important;
-    overflow: auto;
-}
-
-  
-.mat-column-name {
-    height: 80px;
-}
-
-.prod-table{
-    width: 80%;
-}
-
-.mat-mdc-row .mat-mdc-cell {
-    border-bottom: 1px solid transparent;
-    border-top: 1px solid transparent;
-    cursor: pointer;
-    max-width: 80% !important;
-}
-  
-.mat-mdc-row:hover .mat-mdc-cell {
-    /*border-color: currentColor;*/
-    font-weight: bold;
-}
-  
-.demo-row-is-clicked {
-    font-weight: bold;
-}
-
 .title{
     padding: 0px 25px;
     font-weight: 500;
@@ -36,7 +5,7 @@
 }
 
 .create-button{
-    margin: 5px 0px;
+    margin: 5px 13px;
     background-color: #3285FA;
     color: white;
 }
@@ -44,9 +13,67 @@
 .edit-button{
     background-color: orange;
     color: white;
+    margin-left: 5px;
+}
+
+.delete-btn{
+    margin-left: 5px;
 }
 
 .add_shopping_cart{
     background-color: #5EDBAF;
     padding-right: 9px;
+}
+
+.prod-list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
+    overflow: auto;
+    padding-left: 15px;
+}
+
+.example-card {
+    width: 270px;
+    height: 345px;
+    display: flex;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.order-product-image{
+    margin-left: 12px;
+    border-radius: 10px;
+}
+
+.prod-number{
+    font-weight: 500;
+}
+
+.prod-description{
+    font-weight: 100;
+    font-size: medium;
+    max-height: 50px; /* Defina a altura máxima desejada */
+    overflow: hidden; /* Esconde o texto que ultrapassa a altura */
+    text-overflow: ellipsis; /* Opcional: adiciona "..." para indicar que o texto foi cortado */
+    display: -webkit-box; /* Necessário para compatibilidade com o line-clamp */
+    -webkit-line-clamp: 3; /* Define o número de linhas visíveis */
+    -webkit-box-orient: vertical; /* Necessário para o line-clamp funcionar */
+    white-space: normal; /* Ajusta o comportamento do texto */
+    margin-bottom: 3%;
+}
+
+.prod-price{
+    font-weight: 600;
+    font-size: medium;
+    position: absolute;
+    bottom: 40px;
+}
+
+.order-div-status-prod {
+    display: flex;
+    align-items: baseline;
+    position: absolute;
+    bottom: 8px;
 }

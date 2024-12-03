@@ -1,10 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, PLATFORM_ID, Inject, ComponentFactoryResolver } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Product } from '../../models/product';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule}  from '@angular/material/icon'
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '../../services/auth.service';
@@ -17,26 +18,36 @@ import { ShoppingCartService } from '../../services/shopping-cart.service';
 import { throwError } from 'rxjs';
 import { SnackbarService } from '../../services/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
-import { UserNotloggedDialogComponent } from '../snack-bar/user-notlogged-dialog/user-notlogged-dialog.component';
+import { MatCardModule } from '@angular/material/card';
+import { NgOptimizedImage } from '@angular/common';
 
 const productsTest = [
-  new Product(1, 'prodTeste1', 'prodTeste1', 10, 1, 10, 'prodTeste.jpg', 1),
-  new Product(2, 'prodTeste2', 'prodTeste2', 20, 1, 10, 'prodTeste.jpg', 1),
+  new Product(1, 'prodTeste1', 'prodTeste1 alwhd;aow awuhda hdha whwiadihawhdiua alklwjdoaoahwiuawdiuawiudaihd', 10, 1, 10, 'prodTeste.jpg', 1),
+  new Product(2, 'prodTeste2', 'prodTeste2 muito suculento colhido hoje mesmo de manha no quinto do meu quintal', 20, 1, 10, 'prodTeste.jpg', 1),
   new Product(3, 'prodTeste3', 'prodTeste3', 30, 1, 10, 'prodTeste.jpg', 1),
   new Product(4, 'prodTeste4', 'prodTeste4', 40, 1, 10, 'prodTeste.jpg', 1),
 ]
+
+const TypeValue = new Map([
+  [1, 'Kg'],
+  [2, 'Uni']
+]);
+
 @Component({
   selector: 'app-products',
   standalone: true,
   imports: [
+    NgOptimizedImage,
+    CommonModule,
     MatTableModule,
     MatButtonModule,
     MatMenuModule,
-    MatIcon,
+    MatIconModule,
     MatPaginator,
     RouterLink,
     NgIf,
-    NgStyle
+    NgStyle,
+    MatCardModule
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
@@ -54,7 +65,8 @@ export class ProductsComponent implements OnInit{
     //'categoryId',
     'action'
   ];
-  dataSource: Product[] = [];
+  products: Product[] = [];
+  typeValue = TypeValue;
   isLoadingResults = true;
 
   rowSelected: string = '';
@@ -89,7 +101,7 @@ export class ProductsComponent implements OnInit{
   ) { }
 
   ngOnInit() {
-    /*this.dataSource = productsTest;
+    /*this.products = productsTest;
     this.length = 4;
     this.pageSize = 10;
     this.pageIndex = 1 - 1;
@@ -98,8 +110,8 @@ export class ProductsComponent implements OnInit{
     this.api.getProducts(this.httpOptions)
     .subscribe({
       next: (res) => {
-        this.dataSource = res.body || [];
-        console.log(this.dataSource);
+        this.products = res.body || [];
+        console.log(this.products);
 
         this.paginationInfo = this.pag.getPaginationInfo(res);
         this.length = this.paginationInfo.TotalItemCount;
@@ -142,14 +154,14 @@ export class ProductsComponent implements OnInit{
     this.api.getProducts(this.httpOptions, new QueryStringParameters(this.pageSize, this.pageIndex + 1))
     .subscribe({
       next: (res) => {
-        this.dataSource = res.body || [];
+        this.products = res.body || [];
 
         this.paginationInfo = this.pag.getPaginationInfo(res);
         this.length = this.paginationInfo.TotalItemCount;
         this.pageSize = this.paginationInfo.PageSize;
         this.pageIndex = this.paginationInfo.PageNumber! - 1;
 
-        console.log(this.dataSource);
+        console.log(this.products);
         console.log(this.paginationInfo);
       },
       error: (err) => {
@@ -170,9 +182,11 @@ export class ProductsComponent implements OnInit{
       .subscribe({
         next: (res) => {
           console.log(res);
+          this.snackBar.openSuccessSnackBar('Product added successfully');
         }, 
         error: (err) => {
           console.log(err);
+          this.snackBar.openErrorSnackBar('Error while adding Product! Try again later');
         }
       });
     }
