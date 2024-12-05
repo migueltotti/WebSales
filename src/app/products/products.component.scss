@@ -5,7 +5,7 @@
 }
 
 .create-button{
-    margin: 5px 13px;
+    margin: -3px 13px 8px 13px;
     background-color: #3285FA;
     color: white;
 }
@@ -76,4 +76,66 @@
     align-items: baseline;
     position: absolute;
     bottom: 8px;
+}
+
+.filter-input{
+    display: flex;
+    margin-left: 16px;
+    margin-bottom: -20px;
+    flex-wrap: wrap;
+}
+
+.search-input{
+    width: 200px;
+    margin-right: 5px;
+}
+
+.value-input{
+    width: 108px;
+    margin-right: 5px;
+}
+
+.typeValue-input{
+    width: 96px;
+    margin-right: 5px;
+}
+
+.search-btn{
+    margin: 9px 5px 0px 0px;
+}
+
+.clear-btn{
+    margin-top: 9px;
+    background-color: #3285FA;
+    color: black;
+}
+
+/* Esconde os botões de aumentar/diminuir para todos os inputs do tipo number */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Para navegadores Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+@media (max-width: 574px){
+    .clear-btn{
+        margin-top: -16px;
+        margin-bottom: 14px;
+    }
+
+    .prod-list{
+        height: 69.5% !important;
+    }
+}
+
+@media (max-width: 507.50px){
+    .search-btn{
+        margin-top: -16px;
+        margin-bottom: 14px;
+    }
 }

@@ -20,6 +20,11 @@ import { SnackbarService } from '../../services/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { NgOptimizedImage } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { ProductParameters } from '../../models/productsParameters';
 
 const productsTest = [
   new Product(1, 'prodTeste1', 'prodTeste1 alwhd;aow awuhda hdha whwiadihawhdiua alklwjdoaoahwiuawdiuawiudaihd', 10, 1, 10, 'prodTeste.jpg', 1),
@@ -47,7 +52,11 @@ const TypeValue = new Map([
     RouterLink,
     NgIf,
     NgStyle,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    FormsModule
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
@@ -66,8 +75,14 @@ export class ProductsComponent implements OnInit{
     'action'
   ];
   products: Product[] = [];
+  productsF: Product[] = [];
   typeValue = TypeValue;
   isLoadingResults = true;
+
+  searchInput = '';
+  valueInput: number | null = null;
+  priceCriteriaInput = '';
+  typeValueInput: string = '';
 
   rowSelected: string = '';
 
@@ -151,26 +166,31 @@ export class ProductsComponent implements OnInit{
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
 
-    this.api.getProducts(this.httpOptions, new QueryStringParameters(this.pageSize, this.pageIndex + 1))
-    .subscribe({
-      next: (res) => {
-        this.products = res.body || [];
+    if(this.searchInput == '' && this.valueInput == null && this.priceCriteriaInput == '' && this.typeValueInput == ''){
+      this.api.getProducts(this.httpOptions, new QueryStringParameters(this.pageSize, this.pageIndex + 1))
+      .subscribe({
+        next: (res) => {
+          this.products = res.body || [];
 
-        this.paginationInfo = this.pag.getPaginationInfo(res);
-        this.length = this.paginationInfo.TotalItemCount;
-        this.pageSize = this.paginationInfo.PageSize;
-        this.pageIndex = this.paginationInfo.PageNumber! - 1;
+          this.paginationInfo = this.pag.getPaginationInfo(res);
+          this.length = this.paginationInfo.TotalItemCount;
+          this.pageSize = this.paginationInfo.PageSize;
+          this.pageIndex = this.paginationInfo.PageNumber! - 1;
 
-        console.log(this.products);
-        console.log(this.paginationInfo);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        console.log('Pagination changed: products loaded');
-      }
-    })
+          console.log(this.products);
+          console.log(this.paginationInfo);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {
+          console.log('Pagination changed: products loaded');
+        }
+      })
+    }
+    else{
+      this.getProductsFiltered(new QueryStringParameters(this.pageSize, this.pageIndex + 1));
+    }
   }
 
   addToShoppingCart(prodId: number) {
@@ -194,5 +214,72 @@ export class ProductsComponent implements OnInit{
       this.snackBar.openErrorSnackBar('User not logged! Login to complete action.')
     }
   }
+
+  getProductsFiltered(parameters: QueryStringParameters | null = null){
+    var productsParameters = new ProductParameters(
+      this.searchInput,
+      this.valueInput,
+      this.priceCriteriaInput,
+      this.typeValueInput,
+    );
+    
+    if(parameters != null){
+      productsParameters.queryString = parameters;
+    }
+
+    this.api.getProductsFiltered(
+      productsParameters,
+      this.httpOptions,
+      productsParameters.queryString
+    ).subscribe({
+      next: (res) => {
+        this.products = res.body || [];
+
+        this.paginationInfo = this.pag.getPaginationInfo(res);
+        this.length = this.paginationInfo.TotalItemCount;
+        this.pageSize = this.paginationInfo.PageSize;
+        this.pageIndex = this.paginationInfo.PageNumber! - 1;
+
+        console.log(this.products);
+        console.log(this.paginationInfo);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('Pagination changed: products loaded');
+      }
+    })
+  }
   
+  clearAllSearch(){
+    this.searchInput = '';
+    this.valueInput = null;
+    this.priceCriteriaInput = '';
+    this.typeValueInput = '';
+
+    this.api.getProducts(this.httpOptions)
+    .subscribe({
+      next: (res) => {
+        this.products = res.body || [];
+        console.log(this.products);
+
+        this.paginationInfo = this.pag.getPaginationInfo(res);
+        this.length = this.paginationInfo.TotalItemCount;
+        this.pageSize = this.paginationInfo.PageSize;
+        this.pageIndex = this.paginationInfo.PageNumber! - 1;
+
+        console.log(this.paginationInfo);
+        
+        this.isLoadingResults = false;
+      },
+      error: (err) => {
+        console.log(err);
+        this.isLoadingResults = false;
+      },
+      complete: () => {
+        console.log('Completed request!');
+      }
+    });
+  }
 }

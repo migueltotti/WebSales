@@ -7,6 +7,7 @@ import { Category } from '../models/category';
 import { FormGroup } from '@angular/forms';
 import { request } from 'http';
 import { QueryStringParameters } from '../models/queryStringParameters';
+import { ProductParameters } from '../models/productsParameters';
 
 const apiUrl = 'https://localhost:44373/api/Products';
 //const apiLoginUrl = 'https://localhost:44373/api/Auth/Login';
@@ -14,10 +15,6 @@ var httpOptions = {headers: new HttpHeaders({
   "Content-Type": "application/json"
 })};
 var token: string | null;
-
-const Kg = 1;
-const Uni = 2;
-
 
 @Injectable({
   providedIn: 'root'
@@ -41,12 +38,19 @@ export class ApiService {
 
   getProducts(
     httpOp: {headers: HttpHeaders} = httpOptions,
-     parameters: QueryStringParameters | null = null) : Observable<HttpResponse<Product[]>> 
+    parameters: QueryStringParameters | null = null,
+    apiPagUrl: string | null = null) : Observable<HttpResponse<Product[]>> 
   {
-    var apiPagUrl = apiUrl; 
+
+    if(apiPagUrl == null){
+      apiPagUrl = apiUrl;
+    } 
 
     if(parameters != null){
-      apiPagUrl += `?PageNumber=${parameters!.pageNumber}&PageSize=${parameters!.pageSize}`;
+      if(apiPagUrl == apiUrl)
+        apiPagUrl += `?PageNumber=${parameters!.pageNumber}&PageSize=${parameters!.pageSize}`;
+      else
+        apiPagUrl += `&PageNumber=${parameters!.pageNumber}&PageSize=${parameters!.pageSize}`;
     }
 
     return this.http.get<HttpResponse<Product[]>>(
@@ -127,23 +131,26 @@ export class ApiService {
     return product;
   }
 
-  getProductAmount(products: Product[], prodId: number) : number{
-    var amount = 0;
+  getProductsFiltered(
+    productParameters: ProductParameters,
+    httpOp: {headers: HttpHeaders} = httpOptions,
+    parameters: QueryStringParameters | null = null): Observable<HttpResponse<Product[]>> 
+  {
+    var url = apiUrl;
+    
+    if(productParameters.name != ''){
+      url += `/name?Name=${productParameters.name}`;
+    }
 
-    // Funcao para aumentar a quantidade do produto escolhido baseado no TypeValue
-    // Para Kg => 100g em 100g
-    // Para Uni => 1 em 1
+    if(productParameters.value != null && productParameters.priceCriteria != ''){
+      url += `/value?Price=${productParameters.value}&PriceCriteria=${productParameters.priceCriteria}`;
+    }
 
-    /*products.forEach(p => {
-      if(p.productId == prodId){
-        switch (p.typeValue){
-          case Kg:
-            amount = 
-        }
-      }
-    })*/
+    if(productParameters.typeValue != ''){
+      url += `/typeValue?TypeValue=${productParameters.typeValue}`;
+    }
 
-    return amount;
+    return this.getProducts(httpOp, parameters, url)
   }
 
   private handleError<T> (operation = 'operation', result?: T){

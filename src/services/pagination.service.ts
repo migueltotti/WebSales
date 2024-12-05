@@ -12,6 +12,7 @@ export class PaginationService {
   getPaginationInfo(response: HttpResponse<any>) : PaginationInfo{
     var paginationInfo = new PaginationInfo();
 
+    //console.log(response.headers);
     const paginationHeader = response.headers.get('X-Pagination');
     //console.log(paginationHeader);
 
