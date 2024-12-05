@@ -17,6 +17,7 @@ import { SnackbarService } from '../../services/snackbar.service';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { ProductChecked } from '../../models/ProductChecked';
+import { OrderService } from '../../services/order.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -44,6 +45,7 @@ export class ShoppingCartComponent implements OnInit {
   constructor(
     private shoppingCartServ: ShoppingCartService,
     private authServ: AuthService,
+    private orderServ: OrderService,
     private snackBarServ: SnackbarService,
     private router: Router
   ) {}
@@ -109,7 +111,28 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   checkout() {
-    console.log('checkout');
+    this.inAction = true;
+    this.orderServ.createAndSendOrderByShoppingCart(this.userId)
+    .pipe(
+      switchMap(order => {
+        console.log(order);
+        return this.shoppingCartServ.getShoppingCartByUserId(this.userId);
+      })
+    ).subscribe({
+      next: (data) => {
+        this.shoppingCart = data;
+        this.snackBarServ.openSuccessSnackBar('Order created successfuly!');
+      },
+      error: (err) => {
+        console.error('An error occurred while getting the ShoppingCart!');
+        this.snackBarServ.openErrorSnackBar('An error occurred while getting the ShoppingCart!');
+        this.router.navigate(['/home']);
+      },
+      complete: () => {
+        console.log('ShoppingCart received successfuly!');
+        this.inAction = false;
+      }
+    });
   }
 
   changeCheckState(prod: ProductChecked){

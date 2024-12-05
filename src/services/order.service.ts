@@ -146,6 +146,19 @@ export class OrderService {
     );
   }
 
+  createAndSendOrderByShoppingCart(userId: number): Observable<Order>{
+    const url = `${apiUrl}/CreateAndSend/${userId}`;
+
+    this.montarHeaderToken();
+
+    return this.http.post<Order>(
+      url, null, httpOptions
+    ).pipe(
+      tap(_ => console.log('Order created and send successfuly!')),
+      catchError(this.handleError<Order>('createAndSendOrderByShoppingCart'))
+    );
+  }
+
   toOrder(form: FormGroup<any>) : Order{
     console.log('Dentro do toOrder');
     console.log(form.value);

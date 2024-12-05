@@ -52,7 +52,10 @@
             <mat-card-title class="sumary-title">Pedido</mat-card-title>
             <mat-card-content class="order-sumary">
                 <div class="sumary-info" style="margin-bottom: -5px;">
-                    <p>Itens:</p> <p>{{ getTotalSelectItens() }}</p>
+                    <p>Itens:</p> <p>{{ shoppingCart.productsCount }}</p>
+                </div>
+                <div class="sumary-info" style="margin-bottom: -5px;">
+                    <p>Checked Itens:</p> <p>{{ getTotalSelectItens() }}</p>
                 </div>
                 <mat-divider class="sumary-divider"></mat-divider>
                 <div class="sumary-info">
